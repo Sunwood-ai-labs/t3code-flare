@@ -1,6 +1,6 @@
 # Maintaining T3 Code Flare
 
-Keep `main` as the maintained fork branch and `upstream` pointed at `https://github.com/pingdotgg/t3code.git`. Preserve merge history so upstream updates retain the fork's artwork and Office preview changes.
+Keep `main` as the maintained fork branch and `upstream` pointed at `https://github.com/pingdotgg/t3code.git`. Preserve merge history so upstream updates retain the fork's branding, artwork, and Office preview changes.
 
 1. Fetch `upstream`, record the selected upstream commit, and create a fresh `sync/upstream-YYYYMMDD` branch from fork `main` in an isolated checkout.
 2. Merge the recorded commit. Resolve source conflicts without replacing the fork's features. Inspect changed workflows and keep upstream deployment, signing, and publishing jobs restricted to `pingdotgg/t3code`.
