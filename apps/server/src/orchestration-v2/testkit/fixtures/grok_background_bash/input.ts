@@ -14,6 +14,11 @@ export function grokBackgroundBashInput(): OrchestratorFixtureInput {
       { type: "message", text: GROK_BACKGROUND_BASH_PROMPT },
       { type: "finish_held_run", targetRunIndex: 1, status: "completed" },
       { type: "release_replay_gate", label: GROK_BACKGROUND_BASH_WAKE_LABEL },
+      // The native handler must receive the complete wake burst before synthetic time advances.
+      {
+        type: "await_replay_event_handled",
+        label: "notification:session/update:agent_message_chunk:task-completed-reply-final",
+      },
       { type: "finish_held_run", targetRunIndex: 2, status: "completed" },
     ],
   };

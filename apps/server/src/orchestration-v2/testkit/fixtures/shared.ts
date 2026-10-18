@@ -243,6 +243,10 @@ export type OrchestratorFixtureInputStep =
       readonly key: string;
     }
   | {
+      readonly type: "await_replay_event_handled";
+      readonly label: string;
+    }
+  | {
       readonly type: "release_replay_gate";
       readonly label: string;
     }
@@ -688,6 +692,9 @@ export function materializeFixtureInput(input: {
           break;
         case "capture_shell_snapshot":
           steps.push({ type: "capture_shell_snapshot", key: step.key });
+          break;
+        case "await_replay_event_handled":
+          steps.push({ type: "await_replay_event_handled", label: step.label });
           break;
         case "release_replay_gate":
           steps.push({ type: "release_replay_gate", label: step.label });

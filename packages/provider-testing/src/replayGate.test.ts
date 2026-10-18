@@ -30,7 +30,27 @@ describe("makeProviderReplayGate", () => {
     expect(gate.hasReached("approval")).toBe(true);
   });
 
+  it("awaits a handled receipt without turning that label into an emission gate", async () => {
+    const gate = makeProviderReplayGate([], ["last-output"]);
+    let handled = false;
+    const receipt = gate.waitForHandled("last-output").then((value) => {
+      handled = value;
+    });
+    await gate.beforeEmit("last-output");
+    expect(handled).toBe(false);
+    gate.recordHandled("unrelated");
+    await Promise.resolve();
+    expect(handled).toBe(false);
+    gate.recordHandled("last-output");
+    await receipt;
+    expect(handled).toBe(true);
+    expect(await gate.waitForHandled("unconfigured")).toBe(false);
+  });
+
   it("rejects duplicate labels", () => {
+    expect(() => makeProviderReplayGate([], ["last-output", "last-output"])).toThrow(
+      "Duplicate provider replay handled label last-output.",
+    );
     expect(() => makeProviderReplayGate(["approval", "approval"])).toThrow(
       "Duplicate provider replay gate label approval.",
     );

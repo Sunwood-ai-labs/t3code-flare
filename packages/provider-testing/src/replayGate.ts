@@ -1,6 +1,10 @@
 import type * as Duration from "effect/Duration";
 
 export interface ProviderReplayGate {
+  /** These labels acknowledge native adapter handlers; they do not block beforeEmit. */
+  readonly handledLabels: ReadonlyArray<string>;
+  readonly recordHandled: (label: string) => void;
+  readonly waitForHandled: (label: string) => Promise<boolean>;
   readonly beforeEmit: (label: string | undefined, signal?: AbortSignal) => Promise<void>;
   readonly waitForReached: (label: string) => Promise<boolean>;
   readonly hasReached: (label: string) => boolean;
@@ -24,7 +28,10 @@ interface GateState {
   readonly resolve: () => void;
 }
 
-export function makeProviderReplayGate(labels: ReadonlyArray<string>): ProviderReplayGate {
+export function makeProviderReplayGate(
+  labels: ReadonlyArray<string>,
+  handledLabels: ReadonlyArray<string> = [],
+): ProviderReplayGate {
   const states = new Map<string, GateState>();
   for (const label of labels) {
     if (states.has(label)) {
@@ -48,10 +55,26 @@ export function makeProviderReplayGate(labels: ReadonlyArray<string>): ProviderR
     });
   }
 
+  const handled = new Map<
+    string,
+    { readonly promise: Promise<boolean>; readonly resolve: () => void }
+  >();
+  for (const label of handledLabels) {
+    if (handled.has(label)) throw new Error(`Duplicate provider replay handled label ${label}.`);
+    let resolve = () => {};
+    const promise = new Promise<boolean>((complete) => {
+      resolve = () => complete(true);
+    });
+    handled.set(label, { promise, resolve });
+  }
+
   const finishArmed: Array<Duration.Input> = [];
   const finishArmedWaiters: Array<() => void> = [];
 
   return {
+    handledLabels: [...handledLabels],
+    recordHandled: (label) => handled.get(label)?.resolve(),
+    waitForHandled: (label) => handled.get(label)?.promise ?? Promise.resolve(false),
     recordFinishArmed: (debounce) => {
       finishArmed.push(debounce);
       for (const wake of finishArmedWaiters.splice(0)) wake();

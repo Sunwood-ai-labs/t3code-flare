@@ -83,6 +83,10 @@ export type OrchestratorV2ScenarioStep =
       readonly runId: OrchestrationV2Run["id"];
     }
   | {
+      readonly type: "await_replay_event_handled";
+      readonly label: string;
+    }
+  | {
       readonly type: "release_replay_gate";
       readonly label: string;
     }
@@ -601,6 +605,23 @@ export function runOrchestratorV2Scenario(
         }
       });
 
+      const awaitReplayEventHandled = Effect.fn("scenario.awaitReplayEventHandled")(function* (
+        label: string,
+      ) {
+        const handled = yield* Effect.promise(
+          () => options.replayGate?.waitForHandled(label) ?? Promise.resolve(false),
+        ).pipe(
+          Effect.timeoutOption(Duration.millis(SCENARIO_WAIT_DEADLINE_MS)),
+          Effect.provideService(Clock.Clock, Clock.Clock.defaultValue()),
+        );
+        if (Option.isNone(handled) || !handled.value) {
+          return yield* new OrchestratorV2ScenarioStepError({
+            scenario: scenario.name,
+            step: `await_replay_event_handled:${label}`,
+          });
+        }
+      });
+
       const releaseReplayGate = Effect.fn("scenario.releaseReplayGate")(function* (label: string) {
         const gate = options.replayGate;
         const reached =
@@ -665,6 +686,9 @@ export function runOrchestratorV2Scenario(
             break;
           case "release_replay_gate_after_waiting":
             yield* releaseReplayGateAfterWaiting(step.label, step.threadId, step.runId);
+            break;
+          case "await_replay_event_handled":
+            yield* awaitReplayEventHandled(step.label);
             break;
           case "release_replay_gate":
             yield* releaseReplayGate(step.label);

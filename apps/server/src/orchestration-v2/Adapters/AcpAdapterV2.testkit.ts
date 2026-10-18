@@ -153,6 +153,76 @@ function acpReplayAgentArgs(scriptPath: string): ReadonlyArray<string> {
   return ["--experimental-strip-types", scriptPath];
 }
 
+const isReplaySessionUpdateFrame = Schema.is(
+  Schema.Struct({
+    kind: Schema.Literal("notification"),
+    method: Schema.Literal("session/update"),
+    params: Schema.Struct({
+      sessionId: Schema.String,
+      _meta: Schema.Struct({ eventId: Schema.String }),
+    }),
+  }),
+);
+
+type SessionUpdateHandler = Parameters<
+  AcpSessionRuntime.AcpSessionRuntime["Service"]["handleSessionUpdate"]
+>[0];
+
+/** A native-handler receipt fences synthetic time; the scenario's final run checks fence persistence. */
+export function withReplaySessionUpdateReceipts(
+  transcript: AcpReplayTranscript,
+  replayGate: ProviderReplayGate,
+  handler: SessionUpdateHandler,
+): SessionUpdateHandler {
+  const labelsBySession = new Map<string, Map<string, string>>();
+  for (const label of replayGate.handledLabels) {
+    const entries = transcript.entries.filter(
+      (entry) => entry.type === "emit_inbound" && entry.label === label,
+    );
+    const entry = entries[0];
+    if (
+      entries.length !== 1 ||
+      entry?.type !== "emit_inbound" ||
+      !isReplaySessionUpdateFrame(entry.frame)
+    ) {
+      throw new Error(
+        `Replay handled label ${label} must identify exactly one session/update frame.`,
+      );
+    }
+    const {
+      sessionId,
+      _meta: { eventId },
+    } = entry.frame.params;
+    if (sessionId.trim().length === 0 || eventId.trim().length === 0) {
+      throw new Error(`Replay handled label ${label} requires a sessionId and eventId.`);
+    }
+    const identityCount = transcript.entries.filter(
+      (candidate) =>
+        candidate.type === "emit_inbound" &&
+        isReplaySessionUpdateFrame(candidate.frame) &&
+        candidate.frame.params.sessionId === sessionId &&
+        candidate.frame.params._meta.eventId === eventId,
+    ).length;
+    if (identityCount !== 1)
+      throw new Error(`Duplicate replay handled event ${sessionId}:${eventId}.`);
+    const labels = labelsBySession.get(sessionId) ?? new Map<string, string>();
+    labels.set(eventId, label);
+    labelsBySession.set(sessionId, labels);
+  }
+  return (notification) => {
+    const eventId = notification._meta?.eventId;
+    const label =
+      typeof eventId === "string"
+        ? labelsBySession.get(notification.sessionId)?.get(eventId)
+        : undefined;
+    return handler(notification).pipe(
+      Effect.tap(() =>
+        label === undefined ? Effect.void : Effect.sync(() => replayGate.recordHandled(label)),
+      ),
+    );
+  };
+}
+
 function holdGatedReplayLines(
   transcript: AcpReplayTranscript,
   replayGate: ProviderReplayGate,
@@ -233,8 +303,17 @@ export function makeAcpReplayRuntime(input: {
           ),
         ),
       );
-      return yield* Effect.service(AcpSessionRuntime.AcpSessionRuntime).pipe(
+      const runtime = yield* Effect.service(AcpSessionRuntime.AcpSessionRuntime).pipe(
         Effect.provide(context),
       );
+      const replayGate = input.replayGate;
+      if (replayGate === undefined || replayGate.handledLabels.length === 0) return runtime;
+      return {
+        ...runtime,
+        handleSessionUpdate: (handler) =>
+          runtime.handleSessionUpdate(
+            withReplaySessionUpdateReceipts(input.transcript, replayGate, handler),
+          ),
+      };
     });
 }

@@ -212,6 +212,9 @@ export function runOrchestratorV2ProviderReplayScenario<
         ? [step.label]
         : [],
     ) ?? [],
+    scenario.steps?.flatMap((step) =>
+      step.type === "await_replay_event_handled" ? [step.label] : [],
+    ) ?? [],
   );
   const layer = layerProviderReplay(scenario, harness, {
     ...options,
