@@ -247,15 +247,14 @@ export const SETTINGS_SEARCH_ITEMS = [
     id: "environment-identification",
     title: "Environment identification",
     to: "/settings/appearance",
-    searchTerms: ["dev nightly artwork pill label hide none"],
+    searchTerms: ["flare header dev nightly artwork pill label hide none"],
     targetId: "appearance-interface",
   },
   {
     id: "environment-artwork-image",
     title: "Environment artwork image",
     to: "/settings/appearance",
-    searchTerms: ["dev nightly sidebar header backdrop custom image url picture"],
-    // Shown only for Dev/Nightly artwork, so link to the always-present parent section.
+    searchTerms: ["flare dev nightly sidebar header backdrop custom image url picture"],
     targetId: "appearance-interface",
   },
   {

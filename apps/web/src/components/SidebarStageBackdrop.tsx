@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { APP_STAGE_LABEL } from "../branding";
 import { resolveServerBackedAppStageLabel } from "../branding.logic";
 import { primaryServerConfigAtom } from "../state/server";
+import flareHeaderUrl from "../assets/flare-header.png";
 
 export type SidebarStageBackdropVariant = "nightly" | "dev";
 export type EnvironmentIdentificationPillLabel = "Dev" | "Nightly";
@@ -71,10 +72,8 @@ export function resolveCustomStageArtworkUrl(
 }
 
 export function SidebarStageBackdrop({
-  variant,
   customImageUrl = null,
 }: {
-  variant: SidebarStageBackdropVariant;
   customImageUrl?: string | null;
 }) {
   return (
@@ -83,21 +82,24 @@ export function SidebarStageBackdrop({
       className="sidebar-stage-backdrop pointer-events-none absolute inset-x-0 top-0 z-0 h-20 select-none overflow-hidden"
     >
       {customImageUrl !== null ? (
-        <CustomStageBackdrop key={customImageUrl} imageUrl={customImageUrl} variant={variant} />
+        <CustomStageBackdrop key={customImageUrl} imageUrl={customImageUrl} />
       ) : (
-        <StageBackdropArt variant={variant} />
+        <FlareHeaderArt />
       )}
     </div>
   );
 }
 
-function CustomStageBackdrop({
-  imageUrl,
-  variant,
-}: {
-  imageUrl: string;
-  variant: SidebarStageBackdropVariant;
-}) {
+function FlareHeaderArt() {
+  return (
+    <div className="relative h-full w-full bg-black" data-stage-art="flare">
+      <img alt="" src={flareHeaderUrl} className="h-full w-full object-cover object-right" />
+      <div className="absolute inset-0 bg-black/35" />
+    </div>
+  );
+}
+
+function CustomStageBackdrop({ imageUrl }: { imageUrl: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [ready, setReady] = useState(false);
 
@@ -150,7 +152,7 @@ function CustomStageBackdrop({
         // The header's white brand and controls must remain legible over user-supplied images.
         <div className="absolute inset-0 bg-black/70" />
       ) : (
-        <StageBackdropArt variant={variant} />
+        <FlareHeaderArt />
       )}
     </>
   );

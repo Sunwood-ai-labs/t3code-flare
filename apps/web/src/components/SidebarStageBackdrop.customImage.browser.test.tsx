@@ -48,7 +48,7 @@ afterEach(async () => {
 
 async function renderBackdrop(customImageUrl: string | null) {
   await act(async () => {
-    root.render(<SidebarStageBackdrop variant="dev" customImageUrl={customImageUrl} />);
+    root.render(<SidebarStageBackdrop customImageUrl={customImageUrl} />);
   });
 }
 
@@ -141,15 +141,20 @@ describe("resolveCustomStageArtworkUrl", () => {
 describe("SidebarStageBackdrop custom image", () => {
   it("renders the built-in artwork when no custom image is set", async () => {
     await renderBackdrop(null);
-    expect(renderedArt()).toBe("blueprint");
+    expect(renderedArt()).toBe("flare");
     expect(requests).toHaveLength(0);
+    const image = container.querySelector("img");
+    if (!image) throw new Error("expected the bundled Flare header image");
+    await image.decode();
+    expect(image.naturalWidth).toBeGreaterThan(0);
+    expect(image.naturalHeight).toBeGreaterThan(0);
   });
 
   it("keeps built-in artwork while loading, then draws one static frame and releases the source", async () => {
     await renderBackdrop("https://example.com/animated.webp");
     const image = latestRequest();
     expect(image.getAttribute("src")).toBe("https://example.com/animated.webp");
-    expect(renderedArt()).toBe("blueprint");
+    expect(renderedArt()).toBe("flare");
     await dispatchImageEvent("load", image);
     expect(renderedArt()).toBe("custom");
     expect(drawImage).toHaveBeenCalledExactlyOnceWith(image, 0, 0, 800, 240);
@@ -169,10 +174,20 @@ describe("SidebarStageBackdrop custom image", () => {
     expect(drawImage).toHaveBeenCalledExactlyOnceWith(image, 0, 0, 2048, 1024);
   });
 
+  it("restores the bundled artwork when a loaded custom image is cleared", async () => {
+    await renderBackdrop("https://example.com/a.png");
+    await dispatchImageEvent("load");
+    expect(renderedArt()).toBe("custom");
+    await renderBackdrop(null);
+    expect(renderedArt()).toBe("flare");
+    expect(container.querySelector("canvas")).toBeNull();
+    expect(latestRequest().hasAttribute("src")).toBe(false);
+  });
+
   it("falls back on image failure and retries a new URL", async () => {
     await renderBackdrop("https://example.com/missing.png");
     await dispatchImageEvent("error");
-    expect(renderedArt()).toBe("blueprint");
+    expect(renderedArt()).toBe("flare");
     expect(latestRequest().hasAttribute("src")).toBe(false);
     await renderBackdrop("https://example.com/b.png");
     await dispatchImageEvent("load");
@@ -185,7 +200,7 @@ describe("SidebarStageBackdrop custom image", () => {
     });
     await renderBackdrop("https://example.com/a.png");
     await dispatchImageEvent("load");
-    expect(renderedArt()).toBe("blueprint");
+    expect(renderedArt()).toBe("flare");
     expect(latestRequest().hasAttribute("src")).toBe(false);
   });
 
@@ -193,7 +208,7 @@ describe("SidebarStageBackdrop custom image", () => {
     getContext.mockReturnValueOnce(null);
     await renderBackdrop("https://example.com/a.png");
     await dispatchImageEvent("load");
-    expect(renderedArt()).toBe("blueprint");
+    expect(renderedArt()).toBe("flare");
     expect(drawImage).not.toHaveBeenCalled();
     expect(latestRequest().hasAttribute("src")).toBe(false);
   });

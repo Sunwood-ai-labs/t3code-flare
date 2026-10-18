@@ -13,7 +13,6 @@ import { T3Wordmark } from "../T3Wordmark";
 import {
   resolveCustomStageArtworkUrl,
   resolveEnvironmentIdentificationPillLabel,
-  resolveSidebarStageBackdropVariant,
   SidebarStageBackdrop,
   useEnvironmentStageLabel,
 } from "../SidebarStageBackdrop";
@@ -42,13 +41,10 @@ export const SidebarChromeHeader = memo(function SidebarChromeHeader({
 }) {
   const stageLabel = useEnvironmentStageLabel();
   const environmentIdentificationMode = useEnvironmentIdentificationMode();
-  const backdropVariant = resolveSidebarStageBackdropVariant(
-    stageLabel,
-    environmentIdentificationMode === "artwork",
-  );
+  const showArtwork = environmentIdentificationMode === "artwork";
   const customArtworkUrl = resolveCustomStageArtworkUrl(useEnvironmentArtworkImageUrl());
   const pillLabel =
-    environmentIdentificationMode === "pill"
+    environmentIdentificationMode !== "none"
       ? resolveEnvironmentIdentificationPillLabel(stageLabel)
       : null;
 
@@ -59,18 +55,16 @@ export const SidebarChromeHeader = memo(function SidebarChromeHeader({
         isElectron && "drag-region",
       )}
     >
-      {backdropVariant ? (
-        <SidebarStageBackdrop variant={backdropVariant} customImageUrl={customArtworkUrl} />
-      ) : null}
+      {showArtwork ? <SidebarStageBackdrop customImageUrl={customArtworkUrl} /> : null}
       <div className="relative top-[calc(var(--workspace-controls-top)-env(safe-area-inset-top))] z-10 ml-[calc(var(--workspace-controls-left)+1px-env(safe-area-inset-left))] flex shrink-0 items-center md:hidden">
         <SidebarTrigger
-          variant={backdropVariant ? "media-navigation" : "ghost"}
+          variant={showArtwork ? "media-navigation" : "ghost"}
           className="relative top-auto translate-y-0"
           aria-label="Toggle main sidebar"
         />
       </div>
       <div className="relative z-10 flex h-8 min-w-0 flex-1 flex-wrap content-start items-center gap-x-2 overflow-hidden py-0.5">
-        <SidebarBrand onBackdrop={backdropVariant !== null} />
+        <SidebarBrand onBackdrop={showArtwork} />
         {pillLabel ? (
           <div className="ml-1 flex h-7 items-center">
             <Badge data-environment-identification="pill" size="sm" variant="secondary">
