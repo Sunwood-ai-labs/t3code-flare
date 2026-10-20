@@ -166,6 +166,20 @@ async function publishUrl(path: string, url: string) {
   });
 }
 
+async function expectAssetRequested(path: string) {
+  await expect
+    .poll(async () => {
+      let requested = false;
+      await act(async () => {
+        requested = state.createUrl.mock.calls.some(
+          ([target]) => target.input.resource.path === path,
+        );
+      });
+      return requested;
+    })
+    .toBe(true);
+}
+
 // Decoding sets naturalWidth before the load event reaches React, so wait for both together.
 async function expectPreview(row: HTMLElement) {
   await expect
@@ -183,7 +197,7 @@ it("loads previews asynchronously and only acquires offscreen images after scrol
   const first = fileRow("icons/icon-0.svg");
   const last = fileRow("icons/icon-39.svg");
 
-  await expect.poll(() => state.createUrl.mock.calls.length).toBeGreaterThan(0);
+  await expectAssetRequested("icons/icon-0.svg");
   expect(first.querySelector("img")).toBeNull();
   expect(first.querySelector("svg")).not.toBeNull();
   expect(last.getBoundingClientRect().top).toBeGreaterThan(window.innerHeight);
@@ -197,13 +211,7 @@ it("loads previews asynchronously and only acquires offscreen images after scrol
   await expectPreview(first);
 
   await act(async () => last.scrollIntoView({ block: "center" }));
-  await expect
-    .poll(() =>
-      state.createUrl.mock.calls.some(
-        ([target]) => target.input.resource.path === "icons/icon-39.svg",
-      ),
-    )
-    .toBe(true);
+  await expectAssetRequested("icons/icon-39.svg");
   await publishUrl("icons/icon-39.svg", imageUrl);
   await expectPreview(last);
   await act(async () => last.click());
