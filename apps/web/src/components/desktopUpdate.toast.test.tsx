@@ -62,6 +62,7 @@ function downloadedState(overrides: Partial<DesktopUpdateState> = {}): DesktopUp
 describe("showDesktopUpdateDownloadedToast", () => {
   beforeEach(() => {
     testState.addToast.mockReset();
+    vi.stubEnv("T3CODE_DESKTOP_UPDATE_REPOSITORY", "Sunwood-ai-labs/t3code-flare");
   });
 
   afterEach(() => {
@@ -90,7 +91,7 @@ describe("showDesktopUpdateDownloadedToast", () => {
     link?.props.onClick?.();
     await vi.waitFor(() => {
       expect(openExternal).toHaveBeenCalledWith(
-        "https://github.com/pingdotgg/t3code/releases/tag/v0.0.30",
+        "https://github.com/Sunwood-ai-labs/t3code-flare/releases/tag/v0.0.30",
       );
     });
     expect(testState.addToast).toHaveBeenCalledTimes(1);
@@ -108,7 +109,7 @@ describe("showDesktopUpdateDownloadedToast", () => {
 
     await vi.waitFor(() => {
       expect(openExternal).toHaveBeenCalledWith(
-        "https://github.com/pingdotgg/t3code/releases/tag/v0.0.30",
+        "https://github.com/Sunwood-ai-labs/t3code-flare/releases/tag/v0.0.30",
       );
     });
   });

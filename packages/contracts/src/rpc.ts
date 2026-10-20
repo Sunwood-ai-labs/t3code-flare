@@ -224,6 +224,8 @@ import {
   ProjectListEntriesError,
   ProjectListEntriesInput,
   ProjectListEntriesResult,
+  ProjectListIgnoredFilesInput,
+  ProjectListIgnoredFilesResult,
   ProjectReadFileError,
   ProjectReadFileInput,
   ProjectReadFileResult,
@@ -280,6 +282,9 @@ import {
   DeviceError,
   DeviceListInput,
   SshDeviceHostConfig,
+  DeviceEasAccount,
+  DeviceEasAccountError,
+  DeviceEasAccountInput,
   DeviceHostSummary,
   DeviceOpenInput,
   DeviceServiceState,
@@ -376,6 +381,7 @@ export const WS_METHODS = {
   projectsAdd: "projects.add",
   projectsRemove: "projects.remove",
   projectsListEntries: "projects.listEntries",
+  projectsListIgnoredFiles: "projects.listIgnoredFiles",
   projectsReadFile: "projects.readFile",
   projectsSearchContents: "projects.searchContents",
   projectsSearchEntries: "projects.searchEntries",
@@ -456,6 +462,7 @@ export const WS_METHODS = {
   deviceConfigure: "device.configure",
   deviceList: "device.list",
   deviceTestHost: "device.testHost",
+  deviceEasAccount: "device.easAccount",
   deviceOpen: "device.open",
   deviceClose: "device.close",
   deviceShutdown: "device.shutdown",
@@ -1207,6 +1214,12 @@ const WsProjectsListEntriesRpc = Rpc.make(WS_METHODS.projectsListEntries, {
   error: Schema.Union([ProjectListEntriesError, EnvironmentAuthorizationError]),
 });
 
+const WsProjectsListIgnoredFilesRpc = Rpc.make(WS_METHODS.projectsListIgnoredFiles, {
+  payload: ProjectListIgnoredFilesInput,
+  success: ProjectListIgnoredFilesResult,
+  error: Schema.Union([ProjectListEntriesError, EnvironmentAuthorizationError]),
+});
+
 const WsProjectsReadFileRpc = Rpc.make(WS_METHODS.projectsReadFile, {
   payload: ProjectReadFileInput,
   success: ProjectReadFileResult,
@@ -1544,6 +1557,12 @@ const WsDeviceTestHostRpc = Rpc.make(WS_METHODS.deviceTestHost, {
   payload: SshDeviceHostConfig,
   success: DeviceHostSummary,
   error: Schema.Union([DeviceError, EnvironmentAuthorizationError]),
+});
+
+const WsDeviceEasAccountRpc = Rpc.make(WS_METHODS.deviceEasAccount, {
+  payload: DeviceEasAccountInput,
+  success: DeviceEasAccount,
+  error: Schema.Union([DeviceEasAccountError, EnvironmentAuthorizationError]),
 });
 
 const WsDeviceListRpc = Rpc.make(WS_METHODS.deviceList, {
@@ -1959,6 +1978,7 @@ export const WsRpcGroup = RpcGroup.make(
   WsProjectCloneRetryRpc,
   WsSubscribeProjectClonesRpc,
   WsProjectsListEntriesRpc,
+  WsProjectsListIgnoredFilesRpc,
   WsProjectsReadFileRpc,
   WsProjectsSearchContentsRpc,
   WsProjectsSearchEntriesRpc,
@@ -2021,6 +2041,7 @@ export const WsRpcGroup = RpcGroup.make(
   WsDeviceConfigureRpc,
   WsDeviceListRpc,
   WsDeviceTestHostRpc,
+  WsDeviceEasAccountRpc,
   WsDeviceOpenRpc,
   WsDeviceCloseRpc,
   WsDeviceShutdownRpc,

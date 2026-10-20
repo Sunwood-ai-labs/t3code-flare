@@ -1,6 +1,7 @@
 import * as Dialog from "../../components/ui/Dialog";
 import { ConnectionTraceId } from "./ConnectionTraceId";
 import { SymbolView } from "../../components/ui/AppSymbol";
+import { hasSavedBearerRoute } from "@t3tools/client-runtime/connection";
 import type { AtomCommandResult } from "@t3tools/client-runtime/state/runtime";
 import { type EnvironmentId, resolveEnvironmentMachineKind } from "@t3tools/contracts";
 import { useAtomValue } from "@effect/atom-react";
@@ -18,6 +19,8 @@ import { ThemedSwitch } from "../../components/ui/ThemedSwitch";
 import { cn } from "../../lib/cn";
 import type { ConnectedEnvironmentSummary } from "../../state/remote-runtime-types";
 import { serverEnvironment } from "../../state/server";
+import { environmentPresentations } from "../../state/presentation";
+import { ConnectionDiagnosisDetails, useConnectionDiagnosis } from "./ConnectionDiagnosisDetails";
 import { ConnectionFormField } from "./ConnectionFormField";
 import { ConnectionStatusDot } from "./ConnectionStatusDot";
 import { environmentStatusText } from "./environmentStatusText";
@@ -52,6 +55,14 @@ export function ConnectionEnvironmentRow(props: {
     serverEnvironment.configValueAtom(props.environment.environmentId),
   );
   const unsupported = props.environment.connectionState === "unsupported";
+  const presentation = useAtomValue(
+    environmentPresentations.presentationAtom(props.environment.environmentId),
+  );
+  const canRetry = presentation !== null && hasSavedBearerRoute(presentation.entry);
+  const { diagnosis, state: connectionState } = useConnectionDiagnosis(
+    props.environment.environmentId,
+    presentation,
+  );
   const enabled = props.environment.isEnabled && !unsupported;
   const statusLabel = connectionStatusLabel(props.environment);
   const statusTraceId = enabled ? props.environment.connectionErrorTraceId : null;
@@ -112,7 +123,16 @@ export function ConnectionEnvironmentRow(props: {
               {props.environment.displayUrl}
             </Text>
           ) : null}
-          {statusLabel ? (
+          {diagnosis ? (
+            <>
+              <Text className="text-xs text-danger-foreground">{diagnosis.headline}</Text>
+              {connectionState.attempt > 0 ? (
+                <Text className="text-xs text-foreground-muted">
+                  {`Retrying · attempt ${connectionState.attempt}`}
+                </Text>
+              ) : null}
+            </>
+          ) : statusLabel ? (
             <Text
               className={cn(
                 "text-xs",
@@ -136,7 +156,7 @@ export function ConnectionEnvironmentRow(props: {
         <ThemedSwitch
           accessibilityLabel={`Enable ${props.environment.environmentLabel}`}
           style={{ alignSelf: "center" }}
-          disabled={unsupported}
+          disabled={unsupported && !canRetry}
           onValueChange={(next) => props.onSetEnabled(props.environment.environmentId, next)}
           value={enabled}
         />
@@ -171,6 +191,12 @@ export function ConnectionEnvironmentRow(props: {
           exiting={FadeOut.duration(150)}
           className="gap-3 px-4 pb-4"
         >
+          {diagnosis ? (
+            <ConnectionDiagnosisDetails
+              hostLabel={props.environment.environmentLabel}
+              diagnosis={diagnosis}
+            />
+          ) : null}
           {props.environment.isRelayManaged ? (
             <Text className="text-sm text-foreground-muted">
               Managed by T3 Connect. Tunnel details update automatically.

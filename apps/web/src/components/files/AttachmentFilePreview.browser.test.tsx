@@ -11,6 +11,7 @@ vi.mock(import("~/assets/assetUrls"), async (original) => ({
   useAssetUrlRefresh: () => refresh,
 }));
 // The real source view highlights through a worker pool; the text it receives is what matters here.
+// Never load the original: its highlighter graph can outlast waitFor on a cold CI browser.
 vi.mock(import("./ReadOnlySourcePreview"), () => ({
   default: ({ text }: { text: string }) => <pre>{text}</pre>,
 }));
@@ -70,6 +71,9 @@ describe("attachment HTML preview recovery", () => {
     expect(container.querySelector("iframe")?.getAttribute("src")).toBe(originalUrl);
     now = 61 * 60_000;
     await toggleMode("Show HTML source");
+    await act(async () => {
+      await import("./ReadOnlySourcePreview");
+    });
     expect(fetch).toHaveBeenCalledExactlyOnceWith(renewedUrl, expect.any(Object));
     await vi.waitFor(() =>
       expect(container.querySelector("pre")?.textContent).toBe("<p>Captured HTML</p>"),
