@@ -1,6 +1,7 @@
 import { act, type ComponentProps } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import { userEvent } from "vite-plus/test/browser";
 import {
   compileResolvedKeybindingsConfig,
   DEFAULT_RESOLVED_KEYBINDINGS,
@@ -196,66 +197,15 @@ describe("right panel new-tab shortcut", () => {
     await renderPanel({
       keybindings: compileResolvedKeybindingsConfig([{ key: "mod+y", command: "rightPanel.new" }]),
     });
-    const initialTrigger = container.querySelector('[aria-label="Add panel surface"]');
-    const describeElement = (element: EventTarget | null) =>
-      element instanceof Element
-        ? {
-            tag: element.tagName,
-            id: element.id,
-            role: element.getAttribute("role"),
-            slot: element.getAttribute("data-slot"),
-            connected: element.isConnected,
-            inert: element.closest("[inert]") !== null,
-            baseUiInert: element.closest("[data-base-ui-inert]") !== null,
-          }
-        : null;
-    const snapshot = (
-      phase: string,
-      target: EventTarget | null = null,
-      relatedTarget: EventTarget | null = null,
-    ) => {
-      const menu = document.querySelector('[role="menu"]');
-      return {
-        phase,
-        target: describeElement(target),
-        relatedTarget: describeElement(relatedTarget),
-        active: describeElement(document.activeElement),
-        trigger: describeElement(container.querySelector('[aria-label="Add panel surface"]')),
-        initialTrigger: describeElement(initialTrigger),
-        hasFocus: document.hasFocus(),
-        visibility: document.visibilityState,
-        menu: menu
-          ? {
-              ...describeElement(menu),
-              open: menu.hasAttribute("data-open"),
-              closed: menu.hasAttribute("data-closed"),
-              ending: menu.hasAttribute("data-ending-style"),
-            }
-          : null,
-      };
-    };
-    const observations: ReturnType<typeof snapshot>[] = [];
-    const record = (
-      phase: string,
-      target: EventTarget | null = null,
-      relatedTarget: EventTarget | null = null,
-    ) => {
-      if (observations.length < 32) observations.push(snapshot(phase, target, relatedTarget));
-    };
-    const observeFocus = (event: FocusEvent) =>
-      record(event.type, event.target, event.relatedTarget);
-    document.addEventListener("focusin", observeFocus);
-    document.addEventListener("focusout", observeFocus);
     document.body.append(input);
     try {
       input.focus();
-      record("input-focused");
       expect((await press("t", { metaKey: true })).defaultPrevented).toBe(false);
       await press("y", { metaKey: true });
-      record("after-open");
       expect(document.querySelector('[role="menu"]')).not.toBeNull();
-      await press("Escape");
-      record("after-escape");
+      await act(async () => userEvent.keyboard("{Escape}"));
+      await act(() => vi.advanceTimersByTimeAsync(0));
+      await act(() => vi.advanceTimersToNextFrame());
       expect(document.querySelector('[role="menu"]:not([data-closed])')).toBeNull();
       const trigger = container.querySelector('[aria-label="Add panel surface"]');
       await expect
@@ -264,15 +214,7 @@ describe("right panel new-tab shortcut", () => {
           return document.activeElement;
         })
         .toBe(trigger);
-    } catch (error) {
-      console.error(
-        "RIGHT_PANEL_FOCUS_DIAGNOSTIC",
-        JSON.stringify({ observations, failed: snapshot("assertion-failed") }),
-      );
-      throw error;
     } finally {
-      document.removeEventListener("focusin", observeFocus);
-      document.removeEventListener("focusout", observeFocus);
       input.remove();
     }
   });
