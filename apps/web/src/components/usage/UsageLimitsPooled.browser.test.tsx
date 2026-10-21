@@ -131,11 +131,14 @@ it.each([
   await click("Use reset");
   await click("Use credit");
   expect(consume).toHaveBeenCalledOnce();
-  // Both popups unmount once their exit animations finish.
+  // The closed popup can remain in the DOM while Base UI runs its exit animation.
   await expect.poll(() => document.querySelector('[role="alertdialog"]')).toBeNull();
-  await expect.poll(() => document.querySelector('[data-slot="popover-popup"]')).toBeNull();
+  await expect
+    .poll(() => document.querySelector('[data-slot="popover-popup"]:not([data-closed])'))
+    .toBeNull();
   const status = document.querySelector('[role="status"]');
   expect(status?.textContent).toBe("Alpha Using reset credit…");
+  expect(status?.closest('[data-slot="popover-popup"]')).toBeNull();
   await click("Alpha:");
   const using = Array.from(document.querySelectorAll("button")).find(
     (node) => node.textContent === "Using…",

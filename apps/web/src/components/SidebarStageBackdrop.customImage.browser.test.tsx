@@ -1,23 +1,24 @@
-import { act } from "react";
-import { createRoot, type Root } from "react-dom/client";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import { act, render, stubGlobal, type Screen } from "../../test/render";
+import { describe, expect, it, vi } from "vite-plus/test";
 
 import { resolveCustomStageArtworkUrl, SidebarStageBackdrop } from "./SidebarStageBackdrop";
 
-let root: Root;
-let container: HTMLDivElement;
-const requests: HTMLImageElement[] = [];
-const drawImage = vi.fn();
-const getContext = vi.fn<(contextId: string) => { drawImage: typeof drawImage } | null>();
-const originalGetContext = HTMLCanvasElement.prototype.getContext;
+const originalGetContext = Object.getOwnPropertyDescriptor(
+  HTMLCanvasElement.prototype,
+  "getContext",
+);
 
-beforeEach(() => {
-  vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);
-  requests.length = 0;
-  drawImage.mockReset();
-  getContext.mockReset().mockReturnValue({ drawImage });
-  Object.defineProperty(HTMLCanvasElement.prototype, "getContext", { value: getContext });
-  vi.stubGlobal("Image", function () {
+function setup() {
+  const requests: HTMLImageElement[] = [];
+  const drawImage = vi.fn();
+  const getContext = vi
+    .fn<(contextId: string) => { drawImage: typeof drawImage } | null>()
+    .mockReturnValue({ drawImage });
+  Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {
+    value: getContext,
+    configurable: true,
+  });
+  const image = stubGlobal("Image", function () {
     const image = document.createElement("img");
     const getAttribute = image.getAttribute.bind(image);
     const hasAttribute = image.hasAttribute.bind(image);
@@ -33,37 +34,37 @@ beforeEach(() => {
     requests.push(image);
     return image;
   });
-  container = document.createElement("div");
-  document.body.append(container);
-  root = createRoot(container);
-});
-
-afterEach(async () => {
-  await act(async () => root.unmount());
-  container.remove();
-  Object.defineProperty(HTMLCanvasElement.prototype, "getContext", { value: originalGetContext });
-  vi.restoreAllMocks();
-  vi.unstubAllGlobals();
-});
-
-async function renderBackdrop(customImageUrl: string | null) {
-  await act(async () => {
-    root.render(<SidebarStageBackdrop customImageUrl={customImageUrl} />);
-  });
+  const latestRequest = () => {
+    const image = requests.at(-1);
+    if (!image) throw new Error("expected an artwork image request");
+    return image;
+  };
+  const dispatchImageEvent = async (type: "load" | "error", image = latestRequest()) => {
+    await act(async () => image.dispatchEvent(new Event(type)));
+  };
+  return {
+    requests,
+    drawImage,
+    getContext,
+    latestRequest,
+    dispatchImageEvent,
+    [Symbol.dispose]() {
+      image[Symbol.dispose]();
+      if (originalGetContext) {
+        Object.defineProperty(HTMLCanvasElement.prototype, "getContext", originalGetContext);
+      } else {
+        Reflect.deleteProperty(HTMLCanvasElement.prototype, "getContext");
+      }
+    },
+  };
 }
 
-function renderedArt() {
-  return container.querySelector("[data-stage-art]")?.getAttribute("data-stage-art") ?? null;
+async function renderBackdrop(screen: Screen, customImageUrl: string | null) {
+  await screen.rerender(<SidebarStageBackdrop customImageUrl={customImageUrl} />);
 }
 
-function latestRequest() {
-  const image = requests.at(-1);
-  if (!image) throw new Error("expected an artwork image request");
-  return image;
-}
-
-async function dispatchImageEvent(type: "load" | "error", image = latestRequest()) {
-  await act(async () => image.dispatchEvent(new Event(type)));
+function renderedArt(screen: Screen) {
+  return screen.container.querySelector("[data-stage-art]")?.getAttribute("data-stage-art") ?? null;
 }
 
 describe("resolveCustomStageArtworkUrl", () => {
@@ -140,10 +141,12 @@ describe("resolveCustomStageArtworkUrl", () => {
 
 describe("SidebarStageBackdrop custom image", () => {
   it("renders the built-in artwork when no custom image is set", async () => {
-    await renderBackdrop(null);
-    expect(renderedArt()).toBe("flare");
+    using _setup = setup();
+    const { requests } = _setup;
+    await using screen = await render(<SidebarStageBackdrop customImageUrl={null} />);
+    expect(renderedArt(screen)).toBe("flare");
     expect(requests).toHaveLength(0);
-    const image = container.querySelector("img");
+    const image = screen.container.querySelector("img");
     if (!image) throw new Error("expected the bundled Flare header image");
     await image.decode();
     expect(image.naturalWidth).toBeGreaterThan(0);
@@ -151,12 +154,16 @@ describe("SidebarStageBackdrop custom image", () => {
   });
 
   it("keeps built-in artwork while loading, then draws one static frame and releases the source", async () => {
-    await renderBackdrop("https://example.com/animated.webp");
+    using _setup = setup();
+    const { drawImage, latestRequest, dispatchImageEvent } = _setup;
+    await using screen = await render(
+      <SidebarStageBackdrop customImageUrl="https://example.com/animated.webp" />,
+    );
     const image = latestRequest();
     expect(image.getAttribute("src")).toBe("https://example.com/animated.webp");
-    expect(renderedArt()).toBe("flare");
+    expect(renderedArt(screen)).toBe("flare");
     await dispatchImageEvent("load", image);
-    expect(renderedArt()).toBe("custom");
+    expect(renderedArt(screen)).toBe("custom");
     expect(drawImage).toHaveBeenCalledExactlyOnceWith(image, 0, 0, 800, 240);
     expect(image.hasAttribute("src")).toBe(false);
     await dispatchImageEvent("load", image);
@@ -164,7 +171,11 @@ describe("SidebarStageBackdrop custom image", () => {
   });
 
   it("bounds the decoded canvas dimensions", async () => {
-    await renderBackdrop("https://example.com/large.png");
+    using _setup = setup();
+    const { latestRequest, dispatchImageEvent, drawImage } = _setup;
+    await using _screen = await render(
+      <SidebarStageBackdrop customImageUrl="https://example.com/large.png" />,
+    );
     const image = latestRequest();
     Object.defineProperties(image, {
       naturalWidth: { value: 8192 },
@@ -175,75 +186,103 @@ describe("SidebarStageBackdrop custom image", () => {
   });
 
   it("restores the bundled artwork when a loaded custom image is cleared", async () => {
-    await renderBackdrop("https://example.com/a.png");
+    using _setup = setup();
+    const { latestRequest, dispatchImageEvent } = _setup;
+    await using screen = await render(
+      <SidebarStageBackdrop customImageUrl="https://example.com/a.png" />,
+    );
     await dispatchImageEvent("load");
-    expect(renderedArt()).toBe("custom");
-    await renderBackdrop(null);
-    expect(renderedArt()).toBe("flare");
-    expect(container.querySelector("canvas")).toBeNull();
+    expect(renderedArt(screen)).toBe("custom");
+    await renderBackdrop(screen, null);
+    expect(renderedArt(screen)).toBe("flare");
+    expect(screen.container.querySelector("canvas")).toBeNull();
     expect(latestRequest().hasAttribute("src")).toBe(false);
   });
 
   it("falls back on image failure and retries a new URL", async () => {
-    await renderBackdrop("https://example.com/missing.png");
+    using _setup = setup();
+    const { latestRequest, dispatchImageEvent } = _setup;
+    await using screen = await render(
+      <SidebarStageBackdrop customImageUrl="https://example.com/missing.png" />,
+    );
     await dispatchImageEvent("error");
-    expect(renderedArt()).toBe("flare");
+    expect(renderedArt(screen)).toBe("flare");
     expect(latestRequest().hasAttribute("src")).toBe(false);
-    await renderBackdrop("https://example.com/b.png");
+    await renderBackdrop(screen, "https://example.com/b.png");
     await dispatchImageEvent("load");
-    expect(renderedArt()).toBe("custom");
+    expect(renderedArt(screen)).toBe("custom");
   });
 
   it("keeps built-in artwork when canvas rendering is unavailable", async () => {
+    using _setup = setup();
+    const { drawImage, latestRequest, dispatchImageEvent } = _setup;
+    await using screen = await render(
+      <SidebarStageBackdrop customImageUrl="https://example.com/a.png" />,
+    );
     drawImage.mockImplementationOnce(() => {
       throw new Error("canvas unavailable");
     });
-    await renderBackdrop("https://example.com/a.png");
     await dispatchImageEvent("load");
-    expect(renderedArt()).toBe("flare");
+    expect(renderedArt(screen)).toBe("flare");
     expect(latestRequest().hasAttribute("src")).toBe(false);
   });
 
   it("keeps built-in artwork and releases the image when no canvas context is available", async () => {
+    using _setup = setup();
+    const { getContext, drawImage, latestRequest, dispatchImageEvent } = _setup;
+    await using screen = await render(
+      <SidebarStageBackdrop customImageUrl="https://example.com/a.png" />,
+    );
     getContext.mockReturnValueOnce(null);
-    await renderBackdrop("https://example.com/a.png");
     await dispatchImageEvent("load");
-    expect(renderedArt()).toBe("flare");
+    expect(renderedArt(screen)).toBe("flare");
     expect(drawImage).not.toHaveBeenCalled();
     expect(latestRequest().hasAttribute("src")).toBe(false);
   });
 
   it("ignores late load and error events from a replaced image", async () => {
-    await renderBackdrop("https://example.com/a.png");
+    using _setup = setup();
+    const { latestRequest, dispatchImageEvent, drawImage } = _setup;
+    await using screen = await render(
+      <SidebarStageBackdrop customImageUrl="https://example.com/a.png" />,
+    );
     const previous = latestRequest();
-    await renderBackdrop("https://example.com/b.png");
+    await renderBackdrop(screen, "https://example.com/b.png");
     await dispatchImageEvent("load", previous);
     await dispatchImageEvent("error", previous);
     expect(drawImage).toHaveBeenCalledTimes(0);
     await dispatchImageEvent("load");
-    expect(renderedArt()).toBe("custom");
+    expect(renderedArt(screen)).toBe("custom");
     expect(drawImage).toHaveBeenCalledTimes(1);
   });
 
   it("retries a failed URL after the custom image setting is cleared", async () => {
-    await renderBackdrop("https://example.com/a.png");
+    using _setup = setup();
+    const { latestRequest, dispatchImageEvent } = _setup;
+    await using screen = await render(
+      <SidebarStageBackdrop customImageUrl="https://example.com/a.png" />,
+    );
     const first = latestRequest();
     await dispatchImageEvent("error");
-    await renderBackdrop(null);
-    await renderBackdrop("https://example.com/a.png");
+    await renderBackdrop(screen, null);
+    await renderBackdrop(screen, "https://example.com/a.png");
     expect(latestRequest()).not.toBe(first);
     await dispatchImageEvent("load");
-    expect(renderedArt()).toBe("custom");
+    expect(renderedArt(screen)).toBe("custom");
   });
 
   it("retries a failed URL after switching to another image and back", async () => {
-    await renderBackdrop("https://example.com/a.png");
+    using _setup = setup();
+    const { latestRequest, dispatchImageEvent } = _setup;
+    await using screen = await render(
+      <SidebarStageBackdrop customImageUrl="https://example.com/a.png" />,
+    );
     const first = latestRequest();
     await dispatchImageEvent("error");
-    await renderBackdrop("https://example.com/b.png");
-    await renderBackdrop("https://example.com/a.png");
+    await renderBackdrop(screen, "https://example.com/b.png");
+    await renderBackdrop(screen, "https://example.com/a.png");
     expect(latestRequest()).not.toBe(first);
     await dispatchImageEvent("load");
-    expect(renderedArt()).toBe("custom");
+    expect(renderedArt(screen)).toBe("custom");
   });
 });
