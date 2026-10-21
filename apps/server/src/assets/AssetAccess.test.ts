@@ -1718,6 +1718,7 @@ describe("AssetAccess", () => {
         cause: platformCause,
       });
       const resolver = ProjectFaviconResolver.ProjectFaviconResolver.of({
+        invalidate: () => Effect.void,
         resolvePath: () => Effect.fail(resolutionCause),
       });
 
