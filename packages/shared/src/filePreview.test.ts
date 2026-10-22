@@ -4,6 +4,7 @@ import {
   filePreviewKind,
   decodeFilePreviewText,
   FILE_TEXT_PREVIEW_MAX_BYTES,
+  hostPreviewMimeTypeFromExtension,
   isWorkspacePreviewEntryPath,
   mediaKindFromPath,
   officePreviewFormat,
