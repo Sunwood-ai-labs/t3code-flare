@@ -8,6 +8,7 @@ import * as NodePath from "node:path";
 import { expect, it } from "@effect/vitest";
 import { EnvironmentId, ProviderInstanceId, ProviderSessionId, ThreadId } from "@t3tools/contracts";
 import * as HostProcess from "@t3tools/shared/HostProcess";
+import { symlinksSupported } from "@t3tools/shared/testing/symlinks";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as Deferred from "effect/Deferred";
@@ -337,9 +338,13 @@ it.layer(layerTest)("CodexDriver", (it) => {
     }).pipe(Effect.scoped);
   // regression: a sign-in that replaces the account mid-probe must not label the old
   // account's catalog with the new identity.
-  it.effect.each(["unchanged", "during-probe"] as const)(
-    "managed catalog keeps its account label and token together: %s",
-    checkManagedAccount,
+  it.effect.skipIf(!symlinksSupported)(
+    "managed catalog keeps its account label and token together: unchanged",
+    () => checkManagedAccount("unchanged"),
+  );
+  it.effect.skipIf(!symlinksSupported)(
+    "managed catalog keeps its account label and token together: during-probe",
+    () => checkManagedAccount("during-probe"),
   );
 
   it.effect.skipIf(windowsHost)(
