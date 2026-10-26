@@ -3771,7 +3771,7 @@ describe("ClaudeAdapterV2 background wake turns", () => {
               );
               const settings = harness.getOpenedOptions()?.settings;
               return typeof settings === "object" ? settings.env?.ENABLE_TOOL_SEARCH : undefined;
-            }),
+            }).pipe(Effect.provideService(HostProcess.Platform, "linux")),
           );
         assert.equal(yield* openedToolSearch('{"env":{"ENABLE_TOOL_SEARCH":"auto"}}'), "true");
         assert.isUndefined(yield* openedToolSearch('{"env":{"ENABLE_TOOL_SEARCH":"false"}}'));
