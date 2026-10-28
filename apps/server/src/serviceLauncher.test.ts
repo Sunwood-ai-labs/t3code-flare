@@ -4,10 +4,11 @@ import type * as NodeChildProcess from "node:child_process";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, it } from "@effect/vitest";
 import { SERVER_EXIT_CODE_STATE_DIR_OWNED } from "@t3tools/contracts";
+import * as HostProcess from "@t3tools/shared/HostProcess";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
-import { vi } from "vite-plus/test";
+import { afterEach, vi } from "vite-plus/test";
 
 import {
   databaseBackupBlocker,
@@ -28,11 +29,21 @@ import {
 } from "./cloud/serviceProtocol.ts";
 
 const spawnedChildren = vi.hoisted((): Array<NodeChildProcess.ChildProcess> => []);
+const fakeRuntimeScripts = vi.hoisted(() => new Map<string, string>());
+
+afterEach(() => {
+  fakeRuntimeScripts.clear();
+});
 
 vi.mock("node:child_process", async (importOriginal) => {
   const actual = await importOriginal<typeof NodeChildProcess>();
   const spawn = (...args: Parameters<typeof actual.spawn>) => {
-    const child = actual.spawn(...args);
+    const command = args[0];
+    const script = fakeRuntimeScripts.get(command);
+    const child =
+      script !== undefined && Array.isArray(args[1])
+        ? actual.spawn(process.execPath, [script, ...args[1]], args[2])
+        : actual.spawn(...args);
     spawnedChildren.push(child);
     return child;
   };
@@ -115,10 +126,18 @@ const writeFakeRuntime = (
   childSource: string,
 ) =>
   Effect.gen(function* () {
-    const entryPath = path.join(versionDir, "t3");
+    const platform = yield* HostProcess.Platform;
+    const entryPath = path.join(versionDir, platform === "win32" ? "t3.exe" : "t3");
     yield* fs.makeDirectory(versionDir, { recursive: true });
-    yield* fs.writeFileString(entryPath, `#!${process.execPath}\n${childSource}`);
-    yield* fs.chmod(entryPath, 0o755);
+    if (platform === "win32") {
+      const scriptPath = path.join(versionDir, "t3-test-runtime.mjs");
+      yield* fs.writeFileString(entryPath, "");
+      yield* fs.writeFileString(scriptPath, childSource);
+      fakeRuntimeScripts.set(entryPath, scriptPath);
+    } else {
+      yield* fs.writeFileString(entryPath, `#!${process.execPath}\n${childSource}`);
+      yield* fs.chmod(entryPath, 0o755);
+    }
     yield* fs.writeFileString(
       path.join(versionDir, ".install-complete"),
       `${path.basename(versionDir)}\n`,

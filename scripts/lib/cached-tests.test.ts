@@ -35,7 +35,7 @@ describe("cachedTestTasks", () => {
       JSON.stringify({ files: ["src/a'$(touch injected).test.ts"], groupSize: 1 }),
     );
     const task = Object.entries(tasks).find(([key]) => key !== "test-cache")![1];
-    expect(task.command).toBe("vp test run 'src/a'\"'\"'$(touch injected).test.ts'");
+    expect(task.command).toBe(`vp test run 'src${NodePath.sep}a'"'"'$(touch injected).test.ts'`);
   });
 
   it("rejects paths outside the checkout and empty groups", () => {
@@ -51,7 +51,9 @@ describe("cachedTestTasks", () => {
   it("accepts spec files discovered by Vitest", () => {
     const tasks = cachedTestTasks(JSON.stringify({ files: ["src/example.spec.ts"], groupSize: 1 }));
     expect(
-      Object.values(tasks).some((task) => task.command === "vp test run 'src/example.spec.ts'"),
+      Object.values(tasks).some(
+        (task) => task.command === `vp test run 'src${NodePath.sep}example.spec.ts'`,
+      ),
     ).toBe(true);
   });
 

@@ -122,7 +122,7 @@ const makeHarness = Effect.fn("test.make_boot_service_harness")(function* (
       return {
         stdout:
           input.args[0] === "--version"
-            ? `t3 v${/versions\/([^/]+)\//.exec(input.command)?.[1] ?? "1.2.3"}\n`
+            ? `t3 v${/versions[\\/]+([^\\/]+)[\\/]+/.exec(input.command)?.[1] ?? "1.2.3"}\n`
             : input.command === "loginctl" && input.args[0] === "show-user"
               ? `${control.linger}\n`
               : input.args[1] === "is-enabled"
@@ -306,7 +306,7 @@ it.layer(NodeServices.layer)("boot service install", (it) => {
       });
       expect(plan.program).toEqual([runtime.entryPath, "__service-launcher"]);
       expect(yield* fs.readFileString(plan.unitPath)).toContain(
-        `ExecStart=${runtime.entryPath} __service-launcher`,
+        `ExecStart=${runtime.entryPath.includes("\\") ? JSON.stringify(runtime.entryPath) : runtime.entryPath} __service-launcher`,
       );
       expect(yield* service.status).toMatchObject({
         current: true,
@@ -468,7 +468,9 @@ it.layer(NodeServices.layer)("boot service install", (it) => {
           protocol: SERVICE_LAUNCHER_PROTOCOL,
           activeVersion: "1.2.4",
         });
-        expect(yield* fs.readFileString(plan.unitPath)).toContain("versions/1.2.4/t3");
+        expect((yield* fs.readFileString(plan.unitPath)).replaceAll(/\\+/g, "/")).toContain(
+          "versions/1.2.4/t3",
+        );
         expect(
           commands.filter(
             (command) =>

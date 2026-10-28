@@ -2,6 +2,7 @@ import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as ModelManifest from "./ModelManifest.ts";
 import { expect, it } from "@effect/vitest";
 import * as HostProcess from "@t3tools/shared/HostProcess";
+import { writeFakeCli } from "@t3tools/provider-testing/fakeCli";
 import * as Crypto from "effect/Crypto";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
@@ -43,15 +44,21 @@ const makeHarness = Effect.fn("test.makeCodexInstallation")(function* (
   const baseDir =
     input.baseDir ?? (yield* fs.makeTempDirectoryScoped({ prefix: "t3-codex-install-test-" }));
   const localDirectory = `${baseDir}/local`;
-  const localBinaryPath = `${localDirectory}/codex${input.platform === "win32" ? ".exe" : ""}`;
   const probeLog = `${baseDir}/local-probes.txt`;
+  let localBinaryPath = `${localDirectory}/codex${input.platform === "win32" ? ".cmd" : ""}`;
   if (input.local) {
     yield* fs.makeDirectory(localDirectory, { recursive: true });
-    yield* fs.writeFileString(
-      localBinaryPath,
-      `#!/bin/sh\nprintf '%s\\n' "$*" >> '${probeLog}'\ncase "$1" in\n--version) ${input.local.versionFails ? "exit 1" : `printf '%s\\n' 'codex-cli ${input.local.version}'`};;\napp-server) exit ${input.local.appServerFails ? "1" : "0"};;\nesac\n`,
-      { mode: 0o755 },
-    );
+    localBinaryPath = writeFakeCli({
+      directory: localDirectory,
+      name: "codex",
+      platform: input.platform ?? "darwin",
+      source: [
+        'import { appendFileSync } from "node:fs";',
+        `appendFileSync(${JSON.stringify(probeLog)}, process.argv.slice(2).join(" ") + "\\n");`,
+        `if (process.argv[2] === "--version") { ${input.local.versionFails ? "" : `process.stdout.write(${JSON.stringify(`codex-cli ${input.local.version}\n`)});`} process.exitCode = ${input.local.versionFails ? 1 : 0}; }`,
+        `else if (process.argv[2] === "app-server") process.exitCode = ${input.local.appServerFails ? 1 : 0};`,
+      ].join("\n"),
+    });
   }
   let downloads = 0;
   const crypto = yield* Crypto.Crypto;
@@ -137,20 +144,25 @@ it.effect.each(["0.156.0", "0.156.1", "0.156.2", "0.157.0"])(
   "reuses installed Codex %s without downloading or taking ownership of it",
   (version) =>
     Effect.gen(function* () {
-      const h = yield* makeHarness({ local: { version } });
-      expect(yield* h.installation.start).toMatchObject({
+      const platform = yield* HostProcess.Platform;
+      const h = yield* makeHarness({ local: { version }, platform });
+      const normalizePath = (path: string | null | undefined) =>
+        typeof path === "string" && platform === "win32" ? path.toLowerCase() : path;
+      const started = yield* h.installation.start;
+      expect(started).toMatchObject({
         source: "local",
         phase: "succeeded",
         installedVersion: version,
-        executablePath: h.localBinaryPath,
         canRemove: false,
       });
-      expect(yield* h.installation.resolve()).toMatchObject({
+      expect(normalizePath(started.executablePath)).toBe(normalizePath(h.localBinaryPath));
+      const resolved = yield* h.installation.resolve();
+      expect(resolved).toMatchObject({
         source: "local",
-        executablePath: h.localBinaryPath,
         managedVersionDirectory: null,
         version,
       });
+      expect(normalizePath(resolved.executablePath)).toBe(normalizePath(h.localBinaryPath));
       yield* h.installation.acquire().pipe(Effect.scoped);
       expect(h.downloads()).toBe(0);
       expect(yield* h.fs.exists(h.installation.managedDirectory)).toBe(false);
@@ -253,6 +265,7 @@ it.effect("uses bundled Codex compatibility when the remote manifest omits its p
   Effect.gen(function* () {
     const h = yield* makeHarness({
       local: { version: "0.156.0" },
+      platform: yield* HostProcess.Platform,
       manifestCurrent: Effect.succeed({
         ...ModelManifest.BUNDLED_MODEL_MANIFEST,
         compatibility: [],

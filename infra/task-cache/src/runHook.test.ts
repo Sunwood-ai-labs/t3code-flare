@@ -4,6 +4,7 @@ import * as NodeFSP from "node:fs/promises";
 import * as NodeHttp from "node:http";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
+import * as NodeURL from "node:url";
 import { expect, it } from "vite-plus/test";
 
 it("uses one machine hook across fresh worktrees without modifying Vite+", async () => {
@@ -279,7 +280,7 @@ it("installs without masking .profile and configures CI through bash", async () 
   const run = (args: string[], env: NodeJS.ProcessEnv) =>
     new Promise<string>((resolve, reject) => {
       const child = NodeChildProcess.spawn(args[0]!, args.slice(1), {
-        env: { ...process.env, ...env, HOME: home, NODE_OPTIONS: "" },
+        env: { ...process.env, ...env, HOME: home, USERPROFILE: home, NODE_OPTIONS: "" },
         stdio: ["ignore", "pipe", "pipe"],
       });
       let output = "";
@@ -367,7 +368,7 @@ it("installs without masking .profile and configures CI through bash", async () 
       [
         process.execPath,
         "--import",
-        NodePath.join(home, ".local/share/t3-task-cache/preload.mjs"),
+        NodeURL.pathToFileURL(NodePath.join(home, ".local/share/t3-task-cache/preload.mjs")).href,
         "-e",
         'console.log("node survives uninstall")',
       ],
