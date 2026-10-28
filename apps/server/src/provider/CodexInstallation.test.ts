@@ -48,17 +48,25 @@ const makeHarness = Effect.fn("test.makeCodexInstallation")(function* (
   let localBinaryPath = `${localDirectory}/codex${input.platform === "win32" ? ".cmd" : ""}`;
   if (input.local) {
     yield* fs.makeDirectory(localDirectory, { recursive: true });
-    localBinaryPath = writeFakeCli({
-      directory: localDirectory,
-      name: "codex",
-      platform: input.platform ?? "darwin",
-      source: [
-        'import { appendFileSync } from "node:fs";',
-        `appendFileSync(${JSON.stringify(probeLog)}, process.argv.slice(2).join(" ") + "\\n");`,
-        `if (process.argv[2] === "--version") { ${input.local.versionFails ? "" : `process.stdout.write(${JSON.stringify(`codex-cli ${input.local.version}\n`)});`} process.exitCode = ${input.local.versionFails ? 1 : 0}; }`,
-        `else if (process.argv[2] === "app-server") process.exitCode = ${input.local.appServerFails ? 1 : 0};`,
-      ].join("\n"),
-    });
+    if (input.platform === "win32") {
+      localBinaryPath = writeFakeCli({
+        directory: localDirectory,
+        name: "codex",
+        platform: "win32",
+        source: [
+          'import { appendFileSync } from "node:fs";',
+          `appendFileSync(${JSON.stringify(probeLog)}, process.argv.slice(2).join(" ") + "\\n");`,
+          `if (process.argv[2] === "--version") { ${input.local.versionFails ? "" : `process.stdout.write(${JSON.stringify(`codex-cli ${input.local.version}\n`)});`} process.exitCode = ${input.local.versionFails ? 1 : 0}; }`,
+          `else if (process.argv[2] === "app-server") process.exitCode = ${input.local.appServerFails ? 1 : 0};`,
+        ].join("\n"),
+      });
+    } else {
+      yield* fs.writeFileString(
+        localBinaryPath,
+        `#!/bin/sh\nprintf '%s\\n' "$*" >> '${probeLog}'\ncase "$1" in\n--version) ${input.local.versionFails ? "exit 1" : `printf '%s\\n' 'codex-cli ${input.local.version}'`};;\napp-server) exit ${input.local.appServerFails ? "1" : "0"};;\nesac\n`,
+        { mode: 0o755 },
+      );
+    }
   }
   let downloads = 0;
   const crypto = yield* Crypto.Crypto;
