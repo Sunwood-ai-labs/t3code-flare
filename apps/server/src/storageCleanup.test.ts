@@ -6,7 +6,7 @@ import * as Fiber from "effect/Fiber";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
-import type * as Path from "effect/Path";
+import * as Path from "effect/Path";
 import type * as Scope from "effect/Scope";
 import * as Stream from "effect/Stream";
 import { SCAN_CACHE_FILE_NAME } from "./usage/usageScanCache.ts";
@@ -243,6 +243,7 @@ const cleanupFixture = (
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const config = yield* ServerConfig.ServerConfig;
+    const path = yield* Path.Path;
     const git = yield* GitVcsDriver.GitVcsDriver;
     const repo = yield* fs.realPath(yield* fs.makeTempDirectoryScoped({ prefix: "cleanup-repo-" }));
     const command = (cwd: string, args: string[]) =>
@@ -255,7 +256,7 @@ const cleanupFixture = (
     yield* command(repo, ["add", "."]);
     yield* command(repo, ["commit", "-m", "initial"]);
     yield* fs.makeDirectory(config.worktreesDir, { recursive: true });
-    const worktree = `${config.worktreesDir}/feature`;
+    const worktree = path.join(config.worktreesDir, "feature");
     yield* command(repo, ["worktree", "add", "-b", "feature", worktree]);
     let settings: import("@t3tools/contracts").ServerSettings = {
       ...DEFAULT_SERVER_SETTINGS,
@@ -1538,6 +1539,7 @@ describe("storage cleanup reports and local file policies", () => {
       Effect.gen(function* () {
         const { service, fs, repo, worktree, command, setThreads, fullStatusCalls } =
           yield* cleanupFixture();
+        const path = yield* Path.Path;
         const changed = { outcome: "kept", reason: "Repository or branch changed" };
         yield* command(worktree, ["checkout", "--detach"]);
         expect((yield* service.runNow).entries[0]).toMatchObject(changed);
@@ -1564,10 +1566,16 @@ describe("storage cleanup reports and local file policies", () => {
         expect(locked?.reason).toContain("Git index is locked");
         expect(yield* fs.readFileString(`${worktree}/tracked.txt`)).toBe("original\n");
         yield* fs.remove(`${index.trim()}.lock`);
-        const gitFile = yield* fs.readFileString(`${worktree}/.git`);
-        yield* fs.writeFileString(`${worktree}/.git`, "gitdir: /missing-git-directory\n");
-        expect((yield* service.runNow).entries[0]).toMatchObject(changed);
-        yield* fs.writeFileString(`${worktree}/.git`, gitFile);
+        const gitFilePath = path.join(worktree, ".git");
+        const gitFile = yield* fs.readFileString(gitFilePath);
+        try {
+          yield* fs.remove(gitFilePath, { force: true });
+          yield* fs.writeFileString(gitFilePath, "gitdir: /missing-git-directory\n");
+          expect((yield* service.runNow).entries[0]).toMatchObject(changed);
+        } finally {
+          yield* fs.remove(gitFilePath, { force: true });
+          yield* fs.writeFileString(gitFilePath, gitFile);
+        }
         expect((yield* service.runNow).entries[0]).toMatchObject({ outcome: "removed" });
         expect(fullStatusCalls()).toBe(0);
       }),

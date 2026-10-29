@@ -168,7 +168,7 @@ function CustomStageBackdrop({ imageUrl }: { imageUrl: string }) {
   );
 }
 
-export function StageBackdropArt({ variant }: { variant: SidebarStageBackdropVariant }) {
+function StageBackdropArt({ variant }: { variant: SidebarStageBackdropVariant }) {
   return variant === "nightly" ? <NightlySkyArt /> : <DevBlueprintArt />;
 }
 
