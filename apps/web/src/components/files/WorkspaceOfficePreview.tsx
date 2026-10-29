@@ -50,6 +50,7 @@ export function WorkspaceOfficePreview(props: {
     refresh: typeof refresh;
     url: string | null;
   } | null>(null);
+  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Gates the Office reader on a fresh server-issued exact-file capability for this request revision; cleanup ignores stale refresh completions.
   useEffect(() => {
     if (!requiresAuthorization) return;
     let cancelled = false;
