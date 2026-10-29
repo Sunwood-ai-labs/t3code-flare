@@ -1,5 +1,6 @@
 import { useAtomValue } from "@effect/atom-react";
 import { useEffect, useId, useRef, useState } from "react";
+import type { EnvironmentIdentificationMode } from "@t3tools/contracts";
 
 import { APP_STAGE_LABEL } from "../branding";
 import { resolveServerBackedAppStageLabel } from "../branding.logic";
@@ -13,9 +14,11 @@ const STAGE_BACKDROP_VIEW_BOX = "0 0 8192 96";
 
 export function resolveSidebarStageBackdropVariant(
   stageLabel: string,
-  enabled = true,
+  mode: EnvironmentIdentificationMode = "artwork",
 ): SidebarStageBackdropVariant | null {
-  if (!enabled) return null;
+  if (mode === "nightly-artwork") return "nightly";
+  if (mode === "dev-artwork") return "dev";
+  if (mode !== "artwork") return null;
   const normalized = stageLabel.trim().toLowerCase();
   if (normalized === "nightly") return "nightly";
   if (normalized === "dev") return "dev";
@@ -41,8 +44,10 @@ export function useEnvironmentStageLabel(): string {
   });
 }
 
-export function useSidebarStageBackdropVariant(enabled = true): SidebarStageBackdropVariant | null {
-  return resolveSidebarStageBackdropVariant(useEnvironmentStageLabel(), enabled);
+export function useSidebarStageBackdropVariant(
+  mode: EnvironmentIdentificationMode,
+): SidebarStageBackdropVariant | null {
+  return resolveSidebarStageBackdropVariant(useEnvironmentStageLabel(), mode);
 }
 
 export function resolveCustomStageArtworkUrl(
@@ -72,8 +77,10 @@ export function resolveCustomStageArtworkUrl(
 }
 
 export function SidebarStageBackdrop({
+  variant = null,
   customImageUrl = null,
 }: {
+  variant?: SidebarStageBackdropVariant | null;
   customImageUrl?: string | null;
 }) {
   return (
@@ -83,6 +90,8 @@ export function SidebarStageBackdrop({
     >
       {customImageUrl !== null ? (
         <CustomStageBackdrop key={customImageUrl} imageUrl={customImageUrl} />
+      ) : variant !== null ? (
+        <StageBackdropArt variant={variant} />
       ) : (
         <FlareHeaderArt />
       )}
@@ -103,6 +112,7 @@ function CustomStageBackdrop({ imageUrl }: { imageUrl: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [ready, setReady] = useState(false);
 
+  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Synchronize the external Image load with a one-frame canvas paint, then release its listeners and source on load or unmount.
   useEffect(() => {
     const image = new Image();
     let active = true;

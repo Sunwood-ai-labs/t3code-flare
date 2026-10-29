@@ -13,6 +13,7 @@ import { T3Wordmark } from "../T3Wordmark";
 import {
   resolveCustomStageArtworkUrl,
   resolveEnvironmentIdentificationPillLabel,
+  resolveSidebarStageBackdropVariant,
   SidebarStageBackdrop,
   useEnvironmentStageLabel,
 } from "../SidebarStageBackdrop";
@@ -42,10 +43,19 @@ export const SidebarChromeHeader = memo(function SidebarChromeHeader({
   const { isMobile } = useSidebar();
   const stageLabel = useEnvironmentStageLabel();
   const environmentIdentificationMode = useEnvironmentIdentificationMode();
+  const backdropVariant = resolveSidebarStageBackdropVariant(
+    stageLabel,
+    environmentIdentificationMode,
+  );
   const showArtwork = environmentIdentificationMode === "artwork";
-  const customArtworkUrl = resolveCustomStageArtworkUrl(useEnvironmentArtworkImageUrl());
+  const hasBackdrop = showArtwork || backdropVariant !== null;
+  const environmentArtworkImageUrl = useEnvironmentArtworkImageUrl();
+  const customArtworkUrl =
+    environmentIdentificationMode === "artwork"
+      ? resolveCustomStageArtworkUrl(environmentArtworkImageUrl)
+      : null;
   const pillLabel =
-    environmentIdentificationMode !== "none"
+    environmentIdentificationMode === "pill"
       ? resolveEnvironmentIdentificationPillLabel(stageLabel)
       : null;
 
@@ -56,18 +66,20 @@ export const SidebarChromeHeader = memo(function SidebarChromeHeader({
         isElectron && "drag-region",
       )}
     >
-      {showArtwork ? <SidebarStageBackdrop customImageUrl={customArtworkUrl} /> : null}
+      {hasBackdrop ? (
+        <SidebarStageBackdrop variant={backdropVariant} customImageUrl={customArtworkUrl} />
+      ) : null}
       {isMobile ? (
         <div className="relative top-[calc(var(--workspace-controls-top)-env(safe-area-inset-top))] z-10 ml-[calc(var(--workspace-controls-left)+1px-env(safe-area-inset-left))] flex shrink-0 items-center">
           <SidebarTrigger
-            variant={showArtwork ? "media-navigation" : "ghost"}
+            variant={hasBackdrop ? "media-navigation" : "ghost"}
             className="relative top-auto translate-y-0"
             aria-label="Toggle main sidebar"
           />
         </div>
       ) : null}
       <div className="relative z-10 flex h-8 min-w-0 flex-1 flex-wrap content-start items-center gap-x-2 overflow-hidden py-0.5">
-        {!isMobile ? <SidebarBrand onBackdrop={showArtwork} /> : null}
+        {!isMobile ? <SidebarBrand onBackdrop={hasBackdrop} /> : null}
         {pillLabel ? (
           <div className="ml-1 flex h-7 items-center">
             <Badge data-environment-identification="pill" size="sm" variant="secondary">
@@ -216,7 +228,7 @@ const SidebarUtilityMenu = memo(function SidebarUtilityMenu() {
           {pullRequestsSupported ? (
             <SidebarUtilityItem
               icon={<PullRequestGlyph.pullRequest />}
-              label="Pull Requests"
+              label="Pull requests"
               onClick={handlePullRequestsClick}
             />
           ) : null}
@@ -232,10 +244,14 @@ const SidebarUtilityMenu = memo(function SidebarUtilityMenu() {
   );
 });
 
-export const SidebarChromeFooter = memo(function SidebarChromeFooter() {
+export const SidebarChromeFooter = memo(function SidebarChromeFooter({
+  showUndoNotice = false,
+}: {
+  showUndoNotice?: boolean;
+}) {
   return (
     <SidebarFooter>
-      <SidebarThreadUndoNotice />
+      {showUndoNotice ? <SidebarThreadUndoNotice /> : null}
       <SidebarProviderUpdatePill />
       <SidebarUpdateArchitectureWarning />
       <SidebarUtilityMenu />
