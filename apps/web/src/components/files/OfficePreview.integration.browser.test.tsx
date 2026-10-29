@@ -15,6 +15,9 @@ const mocks = vi.hoisted(() => ({
   url: "https://environment.test/api/assets/signed/book.xlsx",
   refresh: vi.fn<() => Promise<string | null>>(),
 }));
+// Office preview behavior is scoped by the asset mocks below; the app connection runtime can
+// otherwise probe the browser-test server through the same global fetch this file observes.
+vi.mock(import("~/localEnvironment"), () => ({ isLocalEnvironmentDisabled: () => true }));
 vi.mock(import("~/assets/assetUrls"), async (original) => ({
   ...(await original()),
   useAssetUrlRefresh: () => mocks.refresh,
