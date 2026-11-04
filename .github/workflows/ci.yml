@@ -291,7 +291,7 @@ jobs:
     needs: changes
     if: ${{ !cancelled() && needs.changes.outputs.test_web != 'false' }}
     runs-on: ${{ github.repository == 'pingdotgg/t3code' && 'blacksmith-8vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
-    timeout-minutes: 10
+    timeout-minutes: ${{ github.repository == 'pingdotgg/t3code' && 10 || 20 }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
