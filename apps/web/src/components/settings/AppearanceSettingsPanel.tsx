@@ -113,10 +113,8 @@ export function AppearanceSettingsPanel() {
   const effectiveEnvironmentIdentificationMode = useEnvironmentIdentificationMode();
   const themeHidesEnvironmentArtwork =
     effectiveEnvironmentIdentificationMode === "pill" &&
-    resolveSidebarStageBackdropVariant(
-      environmentStageLabel,
-      settings.environmentIdentificationMode,
-    ) !== null;
+    settings.environmentIdentificationMode !== "pill" &&
+    settings.environmentIdentificationMode !== "none";
   const environmentIdentificationDescription = themeHidesEnvironmentArtwork
     ? environmentStageVariant
       ? "Only built-in themes show artwork, so this theme shows the version pill."
