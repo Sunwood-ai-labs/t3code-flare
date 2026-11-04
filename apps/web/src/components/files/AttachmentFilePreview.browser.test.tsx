@@ -2468,6 +2468,7 @@ async function workspacePdfPreview() {
         [original, updated, shorter, shrunk, single].forEach(URL.revokeObjectURL),
     };
   })();
+  const threadId = ThreadId.make(urls.original);
   const preview = (src: string, mutation: string, path = "/repo/planning.pdf") => {
     assetUrlState.mockReturnValue({
       _tag: "Success",
@@ -2478,7 +2479,7 @@ async function workspacePdfPreview() {
       <div className="flex h-[600px] w-[320px]">
         <WorkspaceBrowserPreview
           environmentId={EnvironmentId.make("test")}
-          threadRef={{ environmentId: EnvironmentId.make("test"), threadId: ThreadId.make("test") }}
+          threadRef={{ environmentId: EnvironmentId.make("test"), threadId }}
           draft={false}
           absolutePath={path}
           workspaceRoot="/repo"
@@ -2521,6 +2522,7 @@ it("keeps numeric PDF zoom and scroll after a content reload", async () => {
   const { preview, urls } = fixture;
   await using screen = await render(preview(urls.original, "one"));
   await expect.element(screen.getByText("1 / 3 pages", { exact: true })).toBeVisible();
+  using workers = vi.spyOn(window, "Worker");
   await screen.getByRole("button", { name: "Next page", exact: true }).click();
   await vi.waitFor(() => expect(screen.container.textContent).toContain("2 / 3 pages"));
   await screen.getByRole("button", { name: "Next page", exact: true }).click();
@@ -2593,6 +2595,7 @@ it("resets the workspace PDF page and scroll when the path changes", async () =>
     expect(region().scrollTop).toBe(0);
     expect(region().scrollLeft).toBe(0);
   });
+  expect(workers).not.toHaveBeenCalled();
 });
 
 it("keeps workspace PDF zoom on page one after reload", async () => {
