@@ -64,6 +64,14 @@ describe("bounded web Office previews", () => {
   );
 
   it.each([
+    ["report.xlsx", "binary/octet-stream", "xlsx"],
+    ["report.xls", "application/unknown", "xls"],
+    ["slides.pptx", "video/mp2t", "pptx"],
+  ])("selects %s for generic MIME %s", (name, mimeType, expected) => {
+    expect(officePreviewFormat({ name, mimeType })).toBe(expected);
+  });
+
+  it.each([
     { name: "report.xlsx", mimeType: "image/png" },
     { name: "report.xls", mimeType: "application/zip" },
     { name: "slides.pptx", mimeType: "text/html" },

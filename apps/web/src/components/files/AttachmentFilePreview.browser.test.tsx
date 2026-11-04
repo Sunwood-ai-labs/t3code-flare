@@ -2522,7 +2522,6 @@ it("keeps numeric PDF zoom and scroll after a content reload", async () => {
   const { preview, urls } = fixture;
   await using screen = await render(preview(urls.original, "one"));
   await expect.element(screen.getByText("1 / 3 pages", { exact: true })).toBeVisible();
-  using workers = vi.spyOn(window, "Worker");
   await screen.getByRole("button", { name: "Next page", exact: true }).click();
   await vi.waitFor(() => expect(screen.container.textContent).toContain("2 / 3 pages"));
   await screen.getByRole("button", { name: "Next page", exact: true }).click();
@@ -2580,6 +2579,7 @@ it("restores Fit Width and page scroll after a PDF reload", async () => {
 it("resets the workspace PDF page and scroll when the path changes", async () => {
   using fixture = await workspacePdfPreview();
   const { preview, urls } = fixture;
+  using workers = vi.spyOn(window, "Worker");
   await using screen = await render(preview(urls.original, "one"));
   await expect.element(screen.getByText("1 / 3 pages", { exact: true })).toBeVisible();
   await screen.getByRole("button", { name: "Next page", exact: true }).click();

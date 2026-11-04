@@ -148,27 +148,27 @@ const makeHarness = Effect.fn("test.make_boot_service_harness")(function* (
         yield* fs.writeFileString(statePath, control.stateAfterStop).pipe(Effect.orDie);
       }
       return {
-          stdout:
-            input.command === "busctl"
-              ? JSON.stringify({
-                  type: "as",
-                  data: [
-                    "/usr/lib/systemd/user",
-                    `${managerUnitDir}.control`,
-                    "/run/user/501/systemd/transient",
-                    managerUnitDir,
-                    "/etc/systemd/user",
-                  ],
-                })
-              : input.args[0] === "--version"
-                ? `t3 v${/versions[\\/]+([^\\/]+)[\\/]+/.exec(input.command)?.[1] ?? "1.2.3"}\n`
-                : input.command === "loginctl" && input.args[0] === "show-user"
-                  ? `${control.linger}\n`
-                  : input.args[1] === "is-enabled"
-                    ? control.enabled
-                      ? "enabled\n"
-                      : "disabled\n"
-                    : "",
+        stdout:
+          input.command === "busctl"
+            ? JSON.stringify({
+                type: "as",
+                data: [
+                  "/usr/lib/systemd/user",
+                  `${managerUnitDir}.control`,
+                  "/run/user/501/systemd/transient",
+                  managerUnitDir,
+                  "/etc/systemd/user",
+                ],
+              })
+            : input.args[0] === "--version"
+              ? `t3 v${/versions[\\/]+([^\\/]+)[\\/]+/.exec(input.command)?.[1] ?? "1.2.3"}\n`
+              : input.command === "loginctl" && input.args[0] === "show-user"
+                ? `${control.linger}\n`
+                : input.args[1] === "is-enabled"
+                  ? control.enabled
+                    ? "enabled\n"
+                    : "disabled\n"
+                  : "",
         stderr: "",
         code: ChildProcessSpawner.ExitCode(
           failed ||

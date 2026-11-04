@@ -147,7 +147,7 @@ export function officePreviewFormat(file: {
   readonly mimeType?: string;
 }): OfficePreviewFormat | null {
   const mime = file.mimeType?.split(";", 1)[0]?.trim().toLowerCase() ?? "";
-  const generic = !mime || mime === "application/octet-stream" || mime === "text/plain";
+  const generic = !mime || GENERIC_MIME_TYPES.has(mime) || mime === "text/plain";
   const office =
     mime === "application/vnd.ms-powerpoint" ||
     Object.values(OFFICE_PREVIEW_MIME_TYPES).some((type) => mime === type);
