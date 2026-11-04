@@ -16,6 +16,7 @@ import {
 import * as HostProcess from "@t3tools/shared/HostProcess";
 import { symlinksSupported } from "@t3tools/shared/testing/symlinks";
 import * as DateTime from "effect/DateTime";
+import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
 import * as FileSystem from "effect/FileSystem";
@@ -28,6 +29,7 @@ import * as TestClock from "effect/testing/TestClock";
 
 import * as ServerConfig from "../config.ts";
 import * as ProjectStore from "../orchestration-v2/ProjectStore.ts";
+import * as ProcessRunner from "../processRunner.ts";
 import * as ServerSettings from "../serverSettings.ts";
 import * as AgentSessionScanner from "./AgentSessionScanner.ts";
 
@@ -58,10 +60,16 @@ interface ScannerTestInput {
   readonly providerInstances?: ContractServerSettings["providerInstances"];
 }
 
-const layerScannerTest = (input: ScannerTestInput) =>
-  AgentSessionScanner.layer.pipe(
+const layerScannerTest = (
+  input: ScannerTestInput,
+  processRunner?: ProcessRunner.ProcessRunner["Service"],
+) =>
+  Layer.effect(AgentSessionScanner.AgentSessionScanner, AgentSessionScanner.make).pipe(
     Layer.provide(
       Layer.mergeAll(
+        processRunner === undefined
+          ? ProcessRunner.layer
+          : Layer.succeed(ProcessRunner.ProcessRunner, processRunner),
         ServerSettings.layerTest({
           providerInstances: {
             [ProviderInstanceId.make("claudeAgent")]: {
@@ -98,11 +106,11 @@ const layerScannerTest = (input: ScannerTestInput) =>
     ),
   );
 
-const runScan = (input: ScannerTestInput) =>
+const runScan = (input: ScannerTestInput, processRunner?: ProcessRunner.ProcessRunner["Service"]) =>
   Effect.gen(function* () {
     const scanner = yield* AgentSessionScanner.AgentSessionScanner;
     return yield* scanner.scan;
-  }).pipe(Effect.provide(layerScannerTest(input)));
+  }).pipe(Effect.provide(layerScannerTest(input, processRunner)));
 
 const runRecentThreadOutcomes = (input: ScannerTestInput & { readonly workspaceRoot: string }) =>
   Effect.gen(function* () {
@@ -1959,11 +1967,40 @@ describe.skipIf(HostProcess.Platform.defaultValue() === "win32")(
           });
         }
 
+        const healthyConfigPaths = new Set([
+          path.join(repos[0], ".git", "config"),
+          path.join(repos[2], ".git", "config"),
+        ]);
+        const realProcessRunner = yield* ProcessRunner.make();
         for (let attempt = 1; attempt <= 2; attempt++) {
-          const scan = yield* Effect.forkChild(runScan({ claudeHomePath, codexHomePath }));
+          const healthyReadsFinished = yield* Deferred.make<void>();
+          const completedHealthyReads = new Set<string>();
+          const processRunner = ProcessRunner.ProcessRunner.of({
+            run: (input) =>
+              realProcessRunner.run(input).pipe(
+                Effect.tap((result) => {
+                  const configPath = input.command === "cat" ? input.args[1] : undefined;
+                  if (
+                    result.code !== 0 ||
+                    result.timedOut ||
+                    configPath === undefined ||
+                    !healthyConfigPaths.has(configPath)
+                  )
+                    return Effect.void;
+                  completedHealthyReads.add(configPath);
+                  return completedHealthyReads.size === healthyConfigPaths.size
+                    ? Deferred.succeed(healthyReadsFinished, undefined).pipe(Effect.asVoid)
+                    : Effect.void;
+                }),
+              ),
+          });
+          const scan = yield* Effect.forkChild(
+            runScan({ claudeHomePath, codexHomePath }, processRunner),
+          );
           const result = yield* Effect.scoped(
             Effect.gen(function* () {
               yield* awaitGateReader(path.join(repos[1], ".git", "config"));
+              yield* Deferred.await(healthyReadsFinished);
               yield* TestClock.adjust("2 seconds");
               return yield* Fiber.join(scan);
             }),
