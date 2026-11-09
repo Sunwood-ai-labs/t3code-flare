@@ -2678,7 +2678,7 @@ it("clamps workspace PDF scroll when pages shrink or disappear", async () => {
   });
   await reloadPdf(screen, preview(urls.shorter, "three"));
   await expect.element(screen.getByText("2 / 2 pages", { exact: true })).toBeVisible();
-  expect(region().textContent).toContain("Updated milestones");
+  await vi.waitFor(() => expect(region().textContent).toContain("Updated milestones"));
   await reloadPdf(screen, preview(urls.single, "four"));
   await expect.element(screen.getByText("1 / 1 pages", { exact: true })).toBeVisible();
   await reloadPdf(screen, preview(urls.original, "five"));
