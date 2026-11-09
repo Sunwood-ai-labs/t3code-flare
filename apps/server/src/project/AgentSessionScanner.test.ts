@@ -23,13 +23,14 @@ import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import * as Path from "effect/Path";
+import * as Queue from "effect/Queue";
 import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 import * as TestClock from "effect/testing/TestClock";
 
 import * as ServerConfig from "../config.ts";
-import * as ProjectStore from "../orchestration-v2/ProjectStore.ts";
 import * as ProcessRunner from "../processRunner.ts";
+import * as ProjectStore from "../orchestration-v2/ProjectStore.ts";
 import * as ServerSettings from "../serverSettings.ts";
 import * as AgentSessionScanner from "./AgentSessionScanner.ts";
 
@@ -58,18 +59,18 @@ interface ScannerTestInput {
   readonly importedWorkspaceRoots?: ReadonlyArray<string>;
   readonly configBaseDir?: string;
   readonly providerInstances?: ContractServerSettings["providerInstances"];
+  readonly processRunner?: Layer.Layer<ProcessRunner.ProcessRunner>;
 }
 
-const layerScannerTest = (
-  input: ScannerTestInput,
-  processRunner?: ProcessRunner.ProcessRunner["Service"],
-) =>
-  Layer.effect(AgentSessionScanner.AgentSessionScanner, AgentSessionScanner.make).pipe(
+const layerScannerTest = (input: ScannerTestInput) =>
+  (input.processRunner === undefined
+    ? AgentSessionScanner.layer
+    : Layer.effect(AgentSessionScanner.AgentSessionScanner, AgentSessionScanner.make).pipe(
+        Layer.provide(input.processRunner),
+      )
+  ).pipe(
     Layer.provide(
       Layer.mergeAll(
-        processRunner === undefined
-          ? ProcessRunner.layer
-          : Layer.succeed(ProcessRunner.ProcessRunner, processRunner),
         ServerSettings.layerTest({
           providerInstances: {
             [ProviderInstanceId.make("claudeAgent")]: {
@@ -106,11 +107,11 @@ const layerScannerTest = (
     ),
   );
 
-const runScan = (input: ScannerTestInput, processRunner?: ProcessRunner.ProcessRunner["Service"]) =>
+const runScan = (input: ScannerTestInput) =>
   Effect.gen(function* () {
     const scanner = yield* AgentSessionScanner.AgentSessionScanner;
     return yield* scanner.scan;
-  }).pipe(Effect.provide(layerScannerTest(input, processRunner)));
+  }).pipe(Effect.provide(layerScannerTest(input)));
 
 const runRecentThreadOutcomes = (input: ScannerTestInput & { readonly workspaceRoot: string }) =>
   Effect.gen(function* () {
@@ -1345,6 +1346,91 @@ it.layer(NodeServices.layer)("AgentSessionScanner", (it) => {
       }),
     );
 
+    it.effect("imports a rewound Codex thread with the history its new rollout inherits", () =>
+      Effect.gen(function* () {
+        const path = yield* Path.Path;
+        const nowMs = Date.parse("2026-08-24T12:00:00.000Z");
+        yield* TestClock.setTime(nowMs);
+        const claudeHomePath = yield* makeTempDir("t3code-claude-home-");
+        const codexHomePath = yield* makeTempDir("t3code-codex-home-");
+        const workspace = yield* makeTempDir("t3code-workspace-");
+        const threadId = "019a0000-0000-7000-8000-000000000001";
+        const rolloutId = "019a0000-0000-7000-8000-000000000002";
+        const sessionsDir = path.join(codexHomePath, "sessions", "2026", "08", "24");
+        const prompt = (message: string) =>
+          encodeTranscriptRecord({ type: "event_msg", payload: { type: "user_message", message } });
+        const reply = (text: string) =>
+          encodeTranscriptRecord({
+            type: "response_item",
+            payload: {
+              type: "message",
+              role: "assistant",
+              content: [{ type: "output_text", text }],
+            },
+          });
+        const keptHistory = [
+          encodeTranscriptRecord({
+            type: "session_meta",
+            payload: { id: threadId, cwd: workspace, history_mode: "paginated" },
+          }),
+          prompt("Keep the first request"),
+          reply("First reply"),
+        ]
+          .map((record) => `${record}\n`)
+          .join("");
+
+        yield* writeTranscript({
+          filePath: path.join(sessionsDir, `rollout-2026-08-24T10-00-00-${threadId}.jsonl`),
+          contents: `${keptHistory}${prompt("Rewound request")}\n${reply("Rewound reply")}\n`,
+          mtimeMs: nowMs - 60_000,
+        });
+        yield* writeTranscript({
+          filePath: path.join(
+            sessionsDir,
+            `rollout-2026-08-24T11-00-00-${threadId}_${rolloutId}.jsonl`,
+          ),
+          contents: [
+            encodeTranscriptRecord({
+              type: "session_meta",
+              payload: {
+                id: threadId,
+                cwd: workspace,
+                history_mode: "paginated",
+                history_base: {
+                  thread_id: threadId,
+                  end_ordinal_exclusive: 3,
+                  end_byte_offset: Buffer.byteLength(keptHistory),
+                },
+              },
+            }),
+            prompt("Ask again"),
+            reply("Final reply"),
+          ].join("\n"),
+          mtimeMs: nowMs,
+        });
+
+        const threads = yield* runRecentThreads({
+          claudeHomePath,
+          codexHomePath,
+          workspaceRoot: workspace,
+        });
+
+        expect(
+          threads.map((thread) => ({
+            id: thread.providerSessionId,
+            title: thread.title,
+            messages: thread.messages.map((message) => message.text),
+          })),
+        ).toEqual([
+          {
+            id: threadId,
+            title: "Keep the first request",
+            messages: ["Keep the first request", "First reply", "Ask again", "Final reply"],
+          },
+        ]);
+      }),
+    );
+
     it.effect("excludes Codex subagents from discovery and the recent-thread budget", () =>
       Effect.gen(function* () {
         const path = yield* Path.Path;
@@ -1967,40 +2053,38 @@ describe.skipIf(HostProcess.Platform.defaultValue() === "win32")(
           });
         }
 
-        const healthyConfigPaths = new Set([
-          path.join(repos[0], ".git", "config"),
-          path.join(repos[2], ".git", "config"),
-        ]);
-        const realProcessRunner = yield* ProcessRunner.make();
+        // The deadline fires for every read still in flight, so on a slow runner the
+        // neighbours' `cat` children must have exited before the clock moves.
+        const neighbourConfigs = new Set(
+          [repos[0], repos[2]].map((repo) => path.join(repo, ".git", "config")),
+        );
+        const finishedNeighbourReads = yield* Queue.unbounded<string>();
+        const processRunner = Layer.effect(
+          ProcessRunner.ProcessRunner,
+          Effect.gen(function* () {
+            const runner = yield* ProcessRunner.ProcessRunner;
+            return ProcessRunner.ProcessRunner.of({
+              run: (input) => {
+                const filePath = input.args.at(-1) ?? "";
+                return neighbourConfigs.has(filePath)
+                  ? runner
+                      .run(input)
+                      .pipe(Effect.ensuring(Queue.offer(finishedNeighbourReads, filePath)))
+                  : runner.run(input);
+              },
+            });
+          }),
+        ).pipe(Layer.provide(ProcessRunner.layer), Layer.provide(NodeServices.layer));
+
         for (let attempt = 1; attempt <= 2; attempt++) {
-          const healthyReadsFinished = yield* Deferred.make<void>();
-          const completedHealthyReads = new Set<string>();
-          const processRunner = ProcessRunner.ProcessRunner.of({
-            run: (input) =>
-              realProcessRunner.run(input).pipe(
-                Effect.tap((result) => {
-                  const configPath = input.command === "cat" ? input.args[1] : undefined;
-                  if (
-                    result.code !== 0 ||
-                    result.timedOut ||
-                    configPath === undefined ||
-                    !healthyConfigPaths.has(configPath)
-                  )
-                    return Effect.void;
-                  completedHealthyReads.add(configPath);
-                  return completedHealthyReads.size === healthyConfigPaths.size
-                    ? Deferred.succeed(healthyReadsFinished, undefined).pipe(Effect.asVoid)
-                    : Effect.void;
-                }),
-              ),
-          });
           const scan = yield* Effect.forkChild(
-            runScan({ claudeHomePath, codexHomePath }, processRunner),
+            runScan({ claudeHomePath, codexHomePath, processRunner }),
           );
           const result = yield* Effect.scoped(
             Effect.gen(function* () {
               yield* awaitGateReader(path.join(repos[1], ".git", "config"));
-              yield* Deferred.await(healthyReadsFinished);
+              yield* Queue.take(finishedNeighbourReads);
+              yield* Queue.take(finishedNeighbourReads);
               yield* TestClock.adjust("2 seconds");
               return yield* Fiber.join(scan);
             }),

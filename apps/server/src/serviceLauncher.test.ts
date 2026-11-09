@@ -398,7 +398,7 @@ if (context.update?.status === "pending") {
         { token: "initial", update: "pending" },
         { token: "initial", update: "rolled-back" },
       ]);
-      assert.equal(process.env.T3CODE_TEST_SERVICE_TOKEN, "inherited");
+      assert.equal((yield* HostProcess.Environment).T3CODE_TEST_SERVICE_TOKEN, "inherited");
       assert.equal(yield* fs.readFileString(envPath), "T3CODE_TEST_SERVICE_TOKEN=changed\n");
     }),
   );
