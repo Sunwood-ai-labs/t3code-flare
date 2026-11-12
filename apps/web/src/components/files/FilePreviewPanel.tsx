@@ -1734,7 +1734,8 @@ export default function FilePreviewPanel({
                   ? {
                       onRefreshSelectedFile: () => {
                         if (officeFormat) refreshOffice();
-                        else if (isDocument && shouldReadDocumentMetadata) refreshDocumentMetadata();
+                        else if (isDocument && shouldReadDocumentMetadata)
+                          refreshDocumentMetadata();
                         else file.refresh();
                         setFileRefreshRevision((value) => value + 1);
                       },
