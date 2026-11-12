@@ -271,7 +271,7 @@ jobs:
   android-build:
     name: Android preview client
     needs: android
-    if: needs.android.outputs.build == 'true'
+    if: ${{ github.repository == 'pingdotgg/t3code' && needs.android.outputs.build == 'true' }}
     runs-on: blacksmith-32vcpu-ubuntu-2404
     timeout-minutes: 60
     concurrency:

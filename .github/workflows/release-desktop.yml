@@ -845,7 +845,7 @@ jobs:
   verify:
     name: Verify
     needs: [build]
-    if: inputs.verify_runner != ''
+    if: ${{ github.repository == 'pingdotgg/t3code' && inputs.verify_runner != '' }}
     runs-on: ${{ inputs.verify_runner }}
     timeout-minutes: 15
     steps:

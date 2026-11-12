@@ -483,7 +483,7 @@ jobs:
     name: Android store build
     needs: production
     # Skipped when the production job failed: no store build after a failed OTA.
-    if: needs.production.outputs.android_build == 'true'
+    if: ${{ github.repository == 'pingdotgg/t3code' && needs.production.outputs.android_build == 'true' }}
     runs-on: blacksmith-32vcpu-ubuntu-2404
     timeout-minutes: 60
     concurrency:
@@ -687,7 +687,7 @@ jobs:
     name: iOS store build
     needs: production
     # Skipped when the production job failed: no store build after a failed OTA.
-    if: needs.production.outputs.ios_build == 'true'
+    if: ${{ github.repository == 'pingdotgg/t3code' && needs.production.outputs.ios_build == 'true' }}
     runs-on: blacksmith-12vcpu-macos-27
     timeout-minutes: 60
     concurrency:
