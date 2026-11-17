@@ -75,7 +75,7 @@ import { PREFERRED_HIGHLIGHTER } from "~/lib/syntaxHighlighting";
 import { cn, isMacPlatform } from "~/lib/utils";
 import { requestWorkspaceFocus } from "~/lib/workspaceFocus";
 import type { ChatFileAttachment } from "~/types";
-import { isHostPath, isNetworkPath } from "@t3tools/shared/path";
+import { isHostPath } from "@t3tools/shared/path";
 import { resolvePathLinkTarget } from "@t3tools/shared/fileLinks";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { stackedThreadToast, toastManager } from "~/components/ui/toast";
@@ -1220,11 +1220,10 @@ export default function FilePreviewPanel({
   const officeAbsolutePath =
     relativePath === null ? null : resolvePathLinkTarget(relativePath, cwd);
   const shouldReadDocumentMetadata =
-    isDocument &&
+    officeFormat !== null &&
     attachment === undefined &&
     officeAbsolutePath !== null &&
-    canReadFiles &&
-    (officeFormat !== null || !isNetworkPath(officeAbsolutePath));
+    canReadFiles;
   const documentMetadata = useEnvironmentQuery(
     shouldReadDocumentMetadata
       ? projectEnvironment.fileMetadata({ environmentId, input: { path: officeAbsolutePath } })
