@@ -1,3 +1,4 @@
+import { useGT } from "gt-react";
 import type { EnvironmentId, ScopedThreadRef } from "@t3tools/contracts";
 import type { OfficePreviewFormat } from "@t3tools/shared/filePreview";
 import { lazy, Suspense, useEffect, useState } from "react";
@@ -31,6 +32,7 @@ export function WorkspaceOfficePreview(props: {
   const mutationId = props.reloadRevision
     ? `manual:${props.reloadRevision}:${props.workspaceMutationId ?? ""}`
     : props.workspaceMutationId;
+  const gt = useGT();
   const [retryRevision, setRetryRevision] = useState(0);
   const requestKey = JSON.stringify([
     props.environmentId,
@@ -80,7 +82,7 @@ export function WorkspaceOfficePreview(props: {
   if (url === null || (!requiresAuthorization && asset._tag === "Failure")) {
     return (
       <FileSurfaceFailure
-        message="Unable to load this Office document. Open the original in another app."
+        message={gt("Unable to load this Office document. Open the original in another app.")} 
         onRetry={() => setRetryRevision((revision) => revision + 1)}
       />
     );

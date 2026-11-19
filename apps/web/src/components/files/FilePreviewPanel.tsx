@@ -1725,7 +1725,7 @@ export default function FilePreviewPanel({
           ) : relativePath && officeFormat && absolutePath ? (
             !canReadFiles ? (
               <FileSurfaceFailure
-                message={fileAccess.error ?? "This connection cannot read host files."}
+                message={fileAccess.error ?? gt("This connection cannot read host files.")}
               />
             ) : documentMetadata.error ? (
               <FileSurfaceFailure message={documentMetadata.error} onRetry={refreshOffice} />
@@ -1733,7 +1733,7 @@ export default function FilePreviewPanel({
               <FileSurfaceLoading />
             ) : documentMetadata.data?.kind !== "file" ? (
               <FileSurfaceFailure
-                message="This file is unavailable. Open the original in another app."
+                message={gt("This file is unavailable. Open the original in another app.") }
                 onRetry={refreshOffice}
               />
             ) : (
@@ -1796,7 +1796,7 @@ export default function FilePreviewPanel({
           ) : relativePath &&
             /\.ppt$/i.test(relativePath) &&
             file.readError?.failure === "binary_file" ? (
-            <FileSurfaceFailure message="Legacy PowerPoint (.ppt) preview is not supported. Open the original file in another app." />
+            <FileSurfaceFailure message={gt("Legacy PowerPoint (.ppt) preview is not supported. Open the original file in another app.") } />
           ) : relativePath &&
             absolutePath &&
             file.data?.truncated &&

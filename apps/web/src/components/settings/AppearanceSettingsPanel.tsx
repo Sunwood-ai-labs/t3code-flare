@@ -470,14 +470,14 @@ export function AppearanceSettingsPanel() {
               description={
                 settings.environmentArtworkImageUrl !== "" &&
                 resolveCustomStageArtworkUrl(settings.environmentArtworkImageUrl) === null
-                  ? "Use an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork is shown."
-                  : "Show a still frame from an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork returns if loading fails."
+                  ? gt("Use an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork is shown.")
+                  : gt("Show a still frame from an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork returns if loading fails.")
               }
               resetAction={
                 settings.environmentArtworkImageUrl !==
                 DEFAULT_UNIFIED_SETTINGS.environmentArtworkImageUrl ? (
                   <SettingResetButton
-                    label="environment artwork image"
+                    label={gt("environment artwork image")}
                     onClick={() =>
                       updateSettings({
                         environmentArtworkImageUrl:
@@ -496,7 +496,7 @@ export function AppearanceSettingsPanel() {
                   maxLength={MAX_ENVIRONMENT_ARTWORK_IMAGE_URL_LENGTH}
                   placeholder="https://"
                   spellCheck={false}
-                  aria-label="Environment artwork image URL"
+                  aria-label={gt("Environment artwork image URL")}
                 />
               }
             />
