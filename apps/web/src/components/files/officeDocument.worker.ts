@@ -24,7 +24,8 @@ self.addEventListener("message", (event: MessageEvent<OfficeWorkerRequest>) => {
     response = {
       id,
       ok: false,
-      error: error instanceof Error ? error.message : m(msg("Could not read this Office document.")),
+      error:
+        error instanceof Error ? error.message : m(msg("Could not read this Office document.")),
     };
   }
   sendResponse(response);

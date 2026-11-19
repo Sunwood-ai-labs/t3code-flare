@@ -3030,7 +3030,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "på datorn som öppnade den här sidan"]
+      "c": [
+        " ",
+        "på datorn som öppnade den här sidan"
+      ]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3042,7 +3045,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "· den som kör den får den här åtkomsten"]
+      "c": [
+        " ",
+        "· den som kör den får den här åtkomsten"
+      ]
     }
   ],
   "c54cc9c75db9dc58": "Godkänn bara en inloggning som du själv precis har startat.",
@@ -4599,13 +4605,14 @@
   "6d00220bfee72afd": "Inte ansluten: meddelandet skickades inte",
   "f62c43120e8c60e7": "Återansluter till miljön. Försök igen när den är ansluten.",
   "74e7e5c0536cda02": "Sidochatten startades inte",
-  "faf9ee0a28119e10": "Ta bort bilagorna och kontexten och skicka sedan igen.",
-  "1778ba2f32077b39": "Uppdatera den här servern innan du startar flera modeller.",
-  "736caccf2954a7f5": "Välj modeller och en basgren",
-  "d08959c85dad0ed0": "Flera modeller kräver en ny tråd i ett Git-projekt. Var och en får sin egen worktree.",
   "87d59d5dbb3eaf83": "Den bifogade tråden finns på en annan dator",
   "4236b99f3807de4b": "Agenten på den här datorn kan inte läsa ”{title}”. Ta bort den eller byt tillbaka till dess dator för att skicka.",
   "811b25d99525bcf7": "Den här datorns agent kan inte läsa ”{title}”. Ta bort den eller byt tillbaka till {owner} för att skicka.",
+  "faf9ee0a28119e10": "Ta bort bilagorna och kontexten och skicka sedan igen.",
+  "d6783ef5e11f3e89": "Kunde inte starta en sidochatt.",
+  "1778ba2f32077b39": "Uppdatera den här servern innan du startar flera modeller.",
+  "736caccf2954a7f5": "Välj modeller och en basgren",
+  "d08959c85dad0ed0": "Flera modeller kräver en ny tråd i ett Git-projekt. Var och en får sin egen worktree.",
   "55f9621a69825e20": "Det köade meddelandet uppdaterades inte",
   "1072fb0e2846f2a4": "Ett köat meddelande kan inte flyttas till en sidochatt. Ta bort /side eller /btw för att spara det.",
   "170ab9bcffd26887": "Starta en Codex-tråd först",
@@ -4701,7 +4708,6 @@
   "f2f589819f1d5aaf": "Ett meddelande kan ha högst {max} bilagor.",
   "83611d16e98f2bbb": "Den tidigare ändringen sparades. Granska dina nyare ändringar och spara igen.",
   "e7c78c337f470f5a": "Det gick inte att öppna webbläsaren",
-  "d6783ef5e11f3e89": "Kunde inte starta en sidochatt.",
   "093c70146c496264": "Sidochatten skapades, men den nådde inte den här klienten.",
   "0efeaa8d0ca3a757": "Sidochatten är inte längre tillgänglig.",
   "61fc2531d076d396": "Kunde inte ange sidochattens behörighetsläge.",
@@ -5371,6 +5377,8 @@
   "c0eb8ecc00293d2d": "Visa filutforskaren",
   "fe8fa0a7343cb0fa": "{count, plural, one {Förhandsvisningen är begränsad till den första 1 MB av en fil på {formatted} byte.} other {Förhandsvisningen är begränsad till den första 1 MB av en fil på {formatted} byte.}}",
   "bd52a233f685b517": "Filinnehåll",
+  "1ce1f773776b7c23": "This file is unavailable. Open the original in another app.",
+  "80024e2f665a5b25": "Legacy PowerPoint (.ppt) preview is not supported. Open the original file in another app.",
   "87ac593c75d6f1f5": "Kunde inte läsa filen",
   "ef2c08da078e1973": "Det gick inte att läsa in förhandsvisningen av filen.",
   "bc03e11dd5872fd5": "Det gick inte att läsa in bilden från arbetsytan.",
@@ -5432,6 +5440,52 @@
   "b9bddb775ce67840": "{count, plural, one {Visa fler celler ({count} kvar)} other {Visa fler celler ({count} kvar)}}",
   "d999fe8cc29e31e4": "Endast sparade utdata. Koden körs aldrig.",
   "c0dcfa827c8c6fc1": "Den här notebooken är tom.",
+  "a2b24499f2bb86a3": "Slides",
+  "2732200e26c87096": "Presentation view",
+  "edf2997465207757": "Slide {number} text",
+  "cf6ed7f585553f50": "Slide {number} preview",
+  "893f59850509de8d": "Worksheets",
+  "0734f52c26db0f87": "{name} cell values",
+  "95bd29605a625b20": [
+    "Slide ",
+    {
+      "i": 1,
+      "k": "_gt_value_1",
+      "v": "v"
+    }
+  ],
+  "f6c14fe053ac5f4f": {
+    "t": "T",
+    "i": 1,
+    "c": "Slide preview"
+  },
+  "d0f7cb41f1ebd8ce": "Slide preview",
+  "9e75e704c3e2aa1b": {
+    "t": "T",
+    "i": 1,
+    "c": "Text outline"
+  },
+  "f904407fa98c6e25": "Text outline",
+  "d763766a47324bec": {
+    "t": "T",
+    "i": 1,
+    "c": "Some slide text was omitted to keep the preview small."
+  },
+  "7389341ca87ed6fc": "Some slide text was omitted to keep the preview small.",
+  "e8c6c70ebe41b07b": "No supported text on this slide.",
+  "c45164db844b3d15": {
+    "t": "T",
+    "i": 1,
+    "c": "Showing at most 100 rows, 30 columns, and 2,000 characters per cell."
+  },
+  "ece4b8a1432aa663": "Showing at most 100 rows, 30 columns, and 2,000 characters per cell.",
+  "bd22bbcf7b99e678": {
+    "t": "T",
+    "i": 1,
+    "c": "Row"
+  },
+  "16708e00d779d894": "Row",
+  "00dcf27663d865aa": "This worksheet is empty.",
   "6b3a82494b31e7a2": "Filen kunde inte läsas in. Stäng den och försök igen.",
   "f37dcbd1ff309548": "Det tog för lång tid att förhandsvisa dokumentet. Öppna det i en annan app.",
   "28dd6601c49436f2": "Kunde inte läsa in Office-visaren. Stäng filen och försök igen.",
@@ -5488,6 +5542,7 @@
   "5c04103935c5510c": "Öppna fil",
   "905935d86457429d": "Sök filer…",
   "12e0b17270235916": "Öppna ett projekt för att söka i dess filer.",
+  "fa251354c1f59562": "Unable to load this Office document. Open the original in another app.",
   "667872eb86f4230f": "Bildavkodningen avbröts.",
   "c2b080e3e4324613": "Det tog för lång tid att avkoda bilden.",
   "c54ff382c8f33dcd": "Kunde inte läsa in bildavkodaren.",
@@ -5500,6 +5555,13 @@
   "2d6da78ecabfd210": "Det gick inte att komma åt arbetsytans mapp.",
   "fdf4cf5389fb7848": "Det gick inte att komma åt eller läsa filen. Den kan saknas eller vara otillgänglig.",
   "40d67da2e98bb2ff": "Läser in fil",
+  "1913a6ef7fa2101c": "Could not read this Office document.",
+  "05619ad41f5f69c0": "Office document download timed out. Save this file to open it in another app.",
+  "e4e5ba7a40033f43": "Office preview startup timed out. Save this file to open it in another app.",
+  "561e9358b1c5692a": "Office preview timed out. Save this file to open it in another app.",
+  "ec42c5e184241584": "Unable to load this Office document.",
+  "a2622135cd3000b5": "Unable to read this Office document. Save it to open in another app.",
+  "1ab47ff895a6f27e": "Unable to read the Office preview result.",
   "3c737fc7e34ae6cd": "Den här filen är inte tillgänglig.",
   "072c416c34dfb2aa": "Den här filen är inte tillgänglig eller för stor för att förhandsvisas.",
   "f0bc374fe068ccc0": "Den här filen är för stor för att förhandsvisas.",
@@ -5700,6 +5762,7 @@
   "b6a29fff7c7c0808": "Ingen",
   "54420465784bb1bd": "Läs in äldre kommentarer",
   "9d82ebf35bfb4043": "Inget har hänt här än.",
+  "1cf216566c1ee064": "Projektet är inte tillgängligt",
   "b5ddadeb0810688c": "Status",
   "93c1fc19d9bf1db0": "Inblandning",
   "2160067266a61dd8": "Alla",
@@ -7292,6 +7355,7 @@
   "7df1a31c9019f5ff": "Nightly-grafik",
   "2f265d02c8753150": "Dev-grafik",
   "20160954f38eeb66": "Versionsetikett",
+  "9ba1f9cd63b95074": "Flare artwork",
   "d5dc7576fd468be7": "Bekväm",
   "3141408bf3874e64": "Bred",
   "831badd18b64547e": "Full",
@@ -7300,7 +7364,7 @@
   "7670f789e0d8672a": "Bara inbyggda teman visar grafik, så det här temat visar versionsetiketten.",
   "3c60ded47d8f82e5": "Bara inbyggda teman visar grafik.",
   "a11f85722f908aa4": "Välj hur Dev- och Nightly-miljöer identifieras.",
-  "ddfb7f26acaf4d0f": "Visa Dev- eller Nightly-grafik i sidofältets sidhuvud.",
+  "c55250b2140f7630": "Show Flare artwork, or choose Dev or Nightly artwork.",
   "a6ec9f054ea34962": "Färger och teman",
   "009ed3b10618aa5f": "Gränssnitt",
   "9d49e865858d0305": "Justera kontrasten för färger och kantlinjer i hela gränssnittet.",
@@ -7325,6 +7389,10 @@
   "cda243654f5bf0a7": "Återställ panelanimationer till standard",
   "c5e730293c781df4": "Återställ miljöidentifiering till standard",
   "11385321578620f5": "Miljöidentifiering",
+  "2cbd71530d4db4fc": "Use an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork is shown.",
+  "3d838bf1763707b5": "Show a still frame from an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork returns if loading fails.",
+  "9ea4375bd3a518d6": "Reset environment artwork image",
+  "5659d186a6fe35ef": "Environment artwork image URL",
   "c9f0ae0132e5debb": "Behåll gren- och worktree-kontroller under inmatningsfältet efter att en tråd har startat.",
   "997a837b4d1a3c62": "Återställ kontext i inmatningsfältet till standard",
   "170455e28b72bdb0": "Håll inmatningsfältets kontext synlig i aktiva trådar",
@@ -9679,6 +9747,7 @@
   "64c8eaaee17ddc77": "Temablandning",
   "36ec9a942db62602": "Diff-färger",
   "a044b6e4df214ae1": "Panelanimeringar",
+  "91cf035a9300a6b9": "Environment artwork image",
   "2c1c93a646bbea6e": "Språk",
   "e5144f91364fd9b7": "Tidsformat",
   "798dc6846ed39fa0": "Aviseringar i appen",
@@ -9861,7 +9930,6 @@
   "573ea5fdf293a9d6": "Alla utcheckningar",
   "470ad8c54049d1e1": "Sök utcheckningar",
   "7e2dfdd9f97fc027": "Projektomfång",
-  "1cf216566c1ee064": "Projektet är inte tillgängligt",
   "c1b8c351aa90f319": [
     {
       "t": "span",
@@ -11409,7 +11477,8 @@
   "88365077fd80787b": "anpassa visa dölj panel kort miljö redigerare skript gren pull request git ändringar servrar automatiseringar härkomst användning gränser 5 timmar vecka kvot token kontextfönster",
   "d561f74efa5f3920": "resonemang ansträngning tänkande staplar diagram ord etikett nivå inmatningsfält",
   "6113c17109ee0d57": "latex tex katex ekvationer formler markdown",
-  "8c8364d44fa28d22": "dev nightly latest kanal grafik pill etikett dölj ingen",
+  "10135bbfb309ce34": "flare header dev nightly latest channel artwork pill label hide none",
+  "22d1b0dab175b6a1": "flare dev nightly sidebar header backdrop custom image url picture",
   "2d90635156dfcb5a": "typografi typsnitt familj storlek system sans",
   "d32e93777e4819c8": "typografi typsnitt familj storlek inmatningsfält inmatning",
   "120d2e7e8c848ee9": "typografi typsnitt familj storlek fast bredd monospace kodblock diffar filförhandsvisningar",

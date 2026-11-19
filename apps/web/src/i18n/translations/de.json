@@ -3031,7 +3031,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "auf dem Computer, der diese Seite geöffnet hat"]
+      "c": [
+        " ",
+        "auf dem Computer, der diese Seite geöffnet hat"
+      ]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3043,7 +3046,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "· wer es ausführt, erhält diesen Zugriff"]
+      "c": [
+        " ",
+        "· wer es ausführt, erhält diesen Zugriff"
+      ]
     }
   ],
   "c54cc9c75db9dc58": "Genehmige nur eine Anmeldung, die du gerade selbst gestartet hast.",
@@ -4601,13 +4607,14 @@
   "6d00220bfee72afd": "Nicht verbunden: Nachricht nicht gesendet",
   "f62c43120e8c60e7": "Verbindung zur Umgebung wird wiederhergestellt. Versuche es erneut, sobald sie verbunden ist.",
   "74e7e5c0536cda02": "Nebenchat nicht gestartet",
-  "faf9ee0a28119e10": "Entferne die Anhänge und den Kontext und sende dann erneut.",
-  "1778ba2f32077b39": "Aktualisiere diesen Server, bevor du mehrere Modelle startest.",
-  "736caccf2954a7f5": "Modelle und einen Basis-Branch wählen",
-  "d08959c85dad0ed0": "Mehrere Modelle brauchen einen neuen Thread in einem Git-Projekt. Jedes erhält einen eigenen Worktree.",
   "87d59d5dbb3eaf83": "Angehängter Thread liegt auf einem anderen Rechner",
   "4236b99f3807de4b": "Der Agent dieses Rechners kann „{title}“ nicht lesen. Entferne es oder wechsle zum Senden zurück zu seinem Rechner.",
   "811b25d99525bcf7": "Der Agent dieses Rechners kann „{title}“ nicht lesen. Entferne es oder wechsle zum Senden zurück zu {owner}.",
+  "faf9ee0a28119e10": "Entferne die Anhänge und den Kontext und sende dann erneut.",
+  "d6783ef5e11f3e89": "Nebenchat konnte nicht gestartet werden.",
+  "1778ba2f32077b39": "Aktualisiere diesen Server, bevor du mehrere Modelle startest.",
+  "736caccf2954a7f5": "Modelle und einen Basis-Branch wählen",
+  "d08959c85dad0ed0": "Mehrere Modelle brauchen einen neuen Thread in einem Git-Projekt. Jedes erhält einen eigenen Worktree.",
   "55f9621a69825e20": "Nachricht in der Warteschlange nicht aktualisiert",
   "1072fb0e2846f2a4": "Eine eingereihte Nachricht kann nicht in einen Nebenchat verschoben werden. Entferne /side oder /btw, um sie zu speichern.",
   "170ab9bcffd26887": "Starte zuerst einen Codex-Thread",
@@ -4703,7 +4710,6 @@
   "f2f589819f1d5aaf": "Eine Nachricht kann höchstens {max} Anhänge haben.",
   "83611d16e98f2bbb": "Die frühere Änderung wurde gespeichert. Prüfe deine neueren Änderungen und speichere erneut.",
   "e7c78c337f470f5a": "Browser kann nicht geöffnet werden",
-  "d6783ef5e11f3e89": "Nebenchat konnte nicht gestartet werden.",
   "093c70146c496264": "Der Nebenchat wurde erstellt, hat diesen Client aber nicht erreicht.",
   "0efeaa8d0ca3a757": "Der Nebenchat ist nicht mehr verfügbar.",
   "61fc2531d076d396": "Der Berechtigungsmodus des Nebenchats konnte nicht festgelegt werden.",
@@ -5371,6 +5377,8 @@
   "c0eb8ecc00293d2d": "Datei-Explorer anzeigen",
   "fe8fa0a7343cb0fa": "{count, plural, one {Vorschau auf das erste 1 MB einer {formatted} Byte großen Datei beschränkt.} other {Vorschau auf das erste 1 MB einer {formatted} Byte großen Datei beschränkt.}}",
   "bd52a233f685b517": "Dateiinhalt",
+  "1ce1f773776b7c23": "This file is unavailable. Open the original in another app.",
+  "80024e2f665a5b25": "Legacy PowerPoint (.ppt) preview is not supported. Open the original file in another app.",
   "87ac593c75d6f1f5": "Datei konnte nicht gelesen werden",
   "ef2c08da078e1973": "Dateivorschau kann nicht geladen werden.",
   "bc03e11dd5872fd5": "Bild aus dem Arbeitsbereich kann nicht geladen werden.",
@@ -5432,6 +5440,52 @@
   "b9bddb775ce67840": "{count, plural, one {Mehr Zellen anzeigen ({count} verbleibend)} other {Mehr Zellen anzeigen ({count} verbleibend)}}",
   "d999fe8cc29e31e4": "Nur gespeicherte Ausgaben. Code wird nie ausgeführt.",
   "c0dcfa827c8c6fc1": "Dieses Notebook ist leer.",
+  "a2b24499f2bb86a3": "Slides",
+  "2732200e26c87096": "Presentation view",
+  "edf2997465207757": "Slide {number} text",
+  "cf6ed7f585553f50": "Slide {number} preview",
+  "893f59850509de8d": "Worksheets",
+  "0734f52c26db0f87": "{name} cell values",
+  "95bd29605a625b20": [
+    "Slide ",
+    {
+      "i": 1,
+      "k": "_gt_value_1",
+      "v": "v"
+    }
+  ],
+  "f6c14fe053ac5f4f": {
+    "t": "T",
+    "i": 1,
+    "c": "Slide preview"
+  },
+  "d0f7cb41f1ebd8ce": "Slide preview",
+  "9e75e704c3e2aa1b": {
+    "t": "T",
+    "i": 1,
+    "c": "Text outline"
+  },
+  "f904407fa98c6e25": "Text outline",
+  "d763766a47324bec": {
+    "t": "T",
+    "i": 1,
+    "c": "Some slide text was omitted to keep the preview small."
+  },
+  "7389341ca87ed6fc": "Some slide text was omitted to keep the preview small.",
+  "e8c6c70ebe41b07b": "No supported text on this slide.",
+  "c45164db844b3d15": {
+    "t": "T",
+    "i": 1,
+    "c": "Showing at most 100 rows, 30 columns, and 2,000 characters per cell."
+  },
+  "ece4b8a1432aa663": "Showing at most 100 rows, 30 columns, and 2,000 characters per cell.",
+  "bd22bbcf7b99e678": {
+    "t": "T",
+    "i": 1,
+    "c": "Row"
+  },
+  "16708e00d779d894": "Row",
+  "00dcf27663d865aa": "This worksheet is empty.",
   "6b3a82494b31e7a2": "Die Datei konnte nicht geladen werden. Schließe sie und versuche es erneut.",
   "f37dcbd1ff309548": "Die Vorschau dieses Dokuments hat zu lange gedauert. Öffne es in einer anderen App.",
   "28dd6601c49436f2": "Der Office-Betrachter konnte nicht geladen werden. Schließe die Datei und versuche es erneut.",
@@ -5488,6 +5542,7 @@
   "5c04103935c5510c": "Datei öffnen",
   "905935d86457429d": "Dateien durchsuchen…",
   "12e0b17270235916": "Öffne ein Projekt, um seine Dateien zu durchsuchen.",
+  "fa251354c1f59562": "Unable to load this Office document. Open the original in another app.",
   "667872eb86f4230f": "Bilddecodierung abgebrochen.",
   "c2b080e3e4324613": "Das Decodieren dieses Bildes hat zu lange gedauert.",
   "c54ff382c8f33dcd": "Der Bilddecoder konnte nicht geladen werden.",
@@ -5500,6 +5555,13 @@
   "2d6da78ecabfd210": "Auf den Arbeitsbereichsordner konnte nicht zugegriffen werden.",
   "fdf4cf5389fb7848": "Auf die Datei konnte nicht zugegriffen werden, oder sie konnte nicht gelesen werden. Sie fehlt möglicherweise oder ist nicht zugänglich.",
   "40d67da2e98bb2ff": "Datei wird geladen",
+  "1913a6ef7fa2101c": "Could not read this Office document.",
+  "05619ad41f5f69c0": "Office document download timed out. Save this file to open it in another app.",
+  "e4e5ba7a40033f43": "Office preview startup timed out. Save this file to open it in another app.",
+  "561e9358b1c5692a": "Office preview timed out. Save this file to open it in another app.",
+  "ec42c5e184241584": "Unable to load this Office document.",
+  "a2622135cd3000b5": "Unable to read this Office document. Save it to open in another app.",
+  "1ab47ff895a6f27e": "Unable to read the Office preview result.",
   "3c737fc7e34ae6cd": "Diese Datei ist nicht verfügbar.",
   "072c416c34dfb2aa": "Diese Datei ist nicht verfügbar oder zu groß für die Vorschau.",
   "f0bc374fe068ccc0": "Diese Datei ist zu groß für die Vorschau.",
@@ -5700,6 +5762,7 @@
   "b6a29fff7c7c0808": "Niemand",
   "54420465784bb1bd": "Ältere Kommentare laden",
   "9d82ebf35bfb4043": "Hier ist noch nichts passiert.",
+  "1cf216566c1ee064": "Projekt nicht verfügbar",
   "b5ddadeb0810688c": "Status",
   "93c1fc19d9bf1db0": "Beteiligung",
   "2160067266a61dd8": "Beliebig",
@@ -7285,6 +7348,7 @@
   "7df1a31c9019f5ff": "Nightly-Artwork",
   "2f265d02c8753150": "Dev-Artwork",
   "20160954f38eeb66": "Versions-Badge",
+  "9ba1f9cd63b95074": "Flare artwork",
   "d5dc7576fd468be7": "Komfortabel",
   "3141408bf3874e64": "Breit",
   "831badd18b64547e": "Voll",
@@ -7293,7 +7357,7 @@
   "7670f789e0d8672a": "Nur integrierte Designs zeigen Artwork, daher zeigt dieses Design das Versions-Badge.",
   "3c60ded47d8f82e5": "Nur integrierte Designs zeigen Artwork.",
   "a11f85722f908aa4": "Wähle, wie Dev- und Nightly-Umgebungen gekennzeichnet werden.",
-  "ddfb7f26acaf4d0f": "Dev- oder Nightly-Artwork im Kopf der Seitenleiste anzeigen.",
+  "c55250b2140f7630": "Show Flare artwork, or choose Dev or Nightly artwork.",
   "a6ec9f054ea34962": "Farben & Designs",
   "009ed3b10618aa5f": "Oberfläche",
   "9d49e865858d0305": "Passe den Kontrast von Farben und Rahmen in der ganzen Oberfläche an.",
@@ -7318,6 +7382,10 @@
   "cda243654f5bf0a7": "Panel-Animationen auf Standard zurücksetzen",
   "c5e730293c781df4": "Umgebungskennzeichnung auf Standard zurücksetzen",
   "11385321578620f5": "Umgebungskennzeichnung",
+  "2cbd71530d4db4fc": "Use an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork is shown.",
+  "3d838bf1763707b5": "Show a still frame from an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork returns if loading fails.",
+  "9ea4375bd3a518d6": "Reset environment artwork image",
+  "5659d186a6fe35ef": "Environment artwork image URL",
   "c9f0ae0132e5debb": "Branch- und Worktree-Steuerelemente nach dem Start eines Threads unter dem Eingabefeld behalten.",
   "997a837b4d1a3c62": "Kontext im Eingabefeld auf Standard zurücksetzen",
   "170455e28b72bdb0": "Kontext des Eingabefelds in aktiven Threads sichtbar halten",
@@ -9672,6 +9740,7 @@
   "64c8eaaee17ddc77": "Design-Mischung",
   "36ec9a942db62602": "Diff-Farben",
   "a044b6e4df214ae1": "Panel-Animationen",
+  "91cf035a9300a6b9": "Environment artwork image",
   "2c1c93a646bbea6e": "Sprache",
   "e5144f91364fd9b7": "Uhrzeitformat",
   "798dc6846ed39fa0": "In-App-Benachrichtigungen",
@@ -9854,7 +9923,6 @@
   "573ea5fdf293a9d6": "Alle Checkouts",
   "470ad8c54049d1e1": "Checkouts durchsuchen",
   "7e2dfdd9f97fc027": "Projektbereich",
-  "1cf216566c1ee064": "Projekt nicht verfügbar",
   "c1b8c351aa90f319": [
     {
       "t": "span",
@@ -11403,7 +11471,8 @@
   "88365077fd80787b": "anpassen anzeigen ausblenden panel karte umgebung editor skripte branch pull request git änderungen server automatisierungen herkunft nutzung limits 5 stunden wöchentlich kontingent tokens kontextfenster",
   "d561f74efa5f3920": "reasoning aufwand denken balken grafik wort bezeichnung stufe eingabefeld",
   "6113c17109ee0d57": "latex tex katex gleichungen formeln markdown",
-  "8c8364d44fa28d22": "dev nightly latest kanal artwork badge bezeichnung ausblenden keine",
+  "10135bbfb309ce34": "flare header dev nightly latest channel artwork pill label hide none",
+  "22d1b0dab175b6a1": "flare dev nightly sidebar header backdrop custom image url picture",
   "2d90635156dfcb5a": "typografie schriftart größe system sans",
   "d32e93777e4819c8": "typografie schriftart größe eingabefeld eingabe",
   "120d2e7e8c848ee9": "typografie schriftart größe monospace codeblöcke diffs dateivorschauen",

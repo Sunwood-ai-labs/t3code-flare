@@ -3028,7 +3028,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "(このページを開いたコンピューター上)"]
+      "c": [
+        " ",
+        "(このページを開いたコンピューター上)"
+      ]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3040,7 +3043,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "· 実行した人にこのアクセス権が付与されます"]
+      "c": [
+        " ",
+        "· 実行した人にこのアクセス権が付与されます"
+      ]
     }
   ],
   "c54cc9c75db9dc58": "自分で開始したばかりのサインインだけを承認してください。",
@@ -4588,13 +4594,14 @@
   "6d00220bfee72afd": "未接続: メッセージは送信されませんでした",
   "f62c43120e8c60e7": "環境に再接続しています。接続されたらもう一度お試しください。",
   "74e7e5c0536cda02": "サイドチャットが開始されていません",
-  "faf9ee0a28119e10": "添付ファイルとコンテキストを削除してから、もう一度送信してください。",
-  "1778ba2f32077b39": "複数のモデルを開始する前に、このサーバーを更新してください。",
-  "736caccf2954a7f5": "モデルとベースブランチを選択",
-  "d08959c85dad0ed0": "複数のモデルを使うには、Git プロジェクトの新しいスレッドが必要です。各モデルに専用のワークツリーが作られます。",
   "87d59d5dbb3eaf83": "添付されたスレッドは別のマシン上にあります",
   "4236b99f3807de4b": "このマシンのエージェントは「{title}」を読み取れません。削除するか、元のマシンに切り替えてから送信してください。",
   "811b25d99525bcf7": "このマシンのエージェントは \"{title}\" を読み取れません。削除するか、{owner} に戻してから送信してください。",
+  "faf9ee0a28119e10": "添付ファイルとコンテキストを削除してから、もう一度送信してください。",
+  "d6783ef5e11f3e89": "サイドチャットを開始できませんでした。",
+  "1778ba2f32077b39": "複数のモデルを開始する前に、このサーバーを更新してください。",
+  "736caccf2954a7f5": "モデルとベースブランチを選択",
+  "d08959c85dad0ed0": "複数のモデルを使うには、Git プロジェクトの新しいスレッドが必要です。各モデルに専用のワークツリーが作られます。",
   "55f9621a69825e20": "キュー内のメッセージは更新されませんでした",
   "1072fb0e2846f2a4": "キュー内のメッセージはサイドチャットに移動できません。保存するには /side または /btw を削除してください。",
   "170ab9bcffd26887": "まず Codex のスレッドを開始してください",
@@ -4690,7 +4697,6 @@
   "f2f589819f1d5aaf": "1 つのメッセージに付けられる添付ファイルは最大 {max} 個です。",
   "83611d16e98f2bbb": "前の編集は保存されました。新しい変更を確認して、もう一度保存してください。",
   "e7c78c337f470f5a": "ブラウザーを開けません",
-  "d6783ef5e11f3e89": "サイドチャットを開始できませんでした。",
   "093c70146c496264": "サイドチャットは作成されましたが、このクライアントに届きませんでした。",
   "0efeaa8d0ca3a757": "サイドチャットは利用できなくなりました。",
   "61fc2531d076d396": "サイドチャットの権限モードを設定できませんでした。",
@@ -5353,6 +5359,8 @@
   "c0eb8ecc00293d2d": "ファイルエクスプローラーを表示",
   "fe8fa0a7343cb0fa": "{count, plural, other {{formatted} バイトのファイルのうち、最初の 1 MB のみをプレビューしています。}}",
   "bd52a233f685b517": "ファイルの内容",
+  "1ce1f773776b7c23": "This file is unavailable. Open the original in another app.",
+  "80024e2f665a5b25": "Legacy PowerPoint (.ppt) preview is not supported. Open the original file in another app.",
   "87ac593c75d6f1f5": "ファイルを読み取れませんでした",
   "ef2c08da078e1973": "ファイルのプレビューを読み込めません。",
   "bc03e11dd5872fd5": "ワークスペースの画像を読み込めません。",
@@ -5414,6 +5422,52 @@
   "b9bddb775ce67840": "{count, plural, other {さらにセルを表示 (残り {count} 個)}}",
   "d999fe8cc29e31e4": "保存された出力のみです。コードは実行されません。",
   "c0dcfa827c8c6fc1": "このノートブックは空です。",
+  "a2b24499f2bb86a3": "Slides",
+  "2732200e26c87096": "Presentation view",
+  "edf2997465207757": "Slide {number} text",
+  "cf6ed7f585553f50": "Slide {number} preview",
+  "893f59850509de8d": "Worksheets",
+  "0734f52c26db0f87": "{name} cell values",
+  "95bd29605a625b20": [
+    "Slide ",
+    {
+      "i": 1,
+      "k": "_gt_value_1",
+      "v": "v"
+    }
+  ],
+  "f6c14fe053ac5f4f": {
+    "t": "T",
+    "i": 1,
+    "c": "Slide preview"
+  },
+  "d0f7cb41f1ebd8ce": "Slide preview",
+  "9e75e704c3e2aa1b": {
+    "t": "T",
+    "i": 1,
+    "c": "Text outline"
+  },
+  "f904407fa98c6e25": "Text outline",
+  "d763766a47324bec": {
+    "t": "T",
+    "i": 1,
+    "c": "Some slide text was omitted to keep the preview small."
+  },
+  "7389341ca87ed6fc": "Some slide text was omitted to keep the preview small.",
+  "e8c6c70ebe41b07b": "No supported text on this slide.",
+  "c45164db844b3d15": {
+    "t": "T",
+    "i": 1,
+    "c": "Showing at most 100 rows, 30 columns, and 2,000 characters per cell."
+  },
+  "ece4b8a1432aa663": "Showing at most 100 rows, 30 columns, and 2,000 characters per cell.",
+  "bd22bbcf7b99e678": {
+    "t": "T",
+    "i": 1,
+    "c": "Row"
+  },
+  "16708e00d779d894": "Row",
+  "00dcf27663d865aa": "This worksheet is empty.",
   "6b3a82494b31e7a2": "ファイルを読み込めませんでした。閉じてもう一度お試しください。",
   "f37dcbd1ff309548": "このドキュメントのプレビューに時間がかかりすぎました。別のアプリで開いてください。",
   "28dd6601c49436f2": "Office ビューアーを読み込めませんでした。ファイルを閉じて、もう一度お試しください。",
@@ -5470,6 +5524,7 @@
   "5c04103935c5510c": "ファイルを開く",
   "905935d86457429d": "ファイルを検索…",
   "12e0b17270235916": "ファイルを検索するにはプロジェクトを開いてください。",
+  "fa251354c1f59562": "Unable to load this Office document. Open the original in another app.",
   "667872eb86f4230f": "画像のデコードがキャンセルされました。",
   "c2b080e3e4324613": "この画像のデコードに時間がかかりすぎました。",
   "c54ff382c8f33dcd": "画像デコーダーを読み込めませんでした。",
@@ -5482,6 +5537,13 @@
   "2d6da78ecabfd210": "ワークスペースのフォルダーにアクセスできませんでした。",
   "fdf4cf5389fb7848": "ファイルにアクセスできないか、読み取れませんでした。存在しないか、アクセスできない可能性があります。",
   "40d67da2e98bb2ff": "ファイルを読み込んでいます",
+  "1913a6ef7fa2101c": "Could not read this Office document.",
+  "05619ad41f5f69c0": "Office document download timed out. Save this file to open it in another app.",
+  "e4e5ba7a40033f43": "Office preview startup timed out. Save this file to open it in another app.",
+  "561e9358b1c5692a": "Office preview timed out. Save this file to open it in another app.",
+  "ec42c5e184241584": "Unable to load this Office document.",
+  "a2622135cd3000b5": "Unable to read this Office document. Save it to open in another app.",
+  "1ab47ff895a6f27e": "Unable to read the Office preview result.",
   "3c737fc7e34ae6cd": "このファイルは利用できません。",
   "072c416c34dfb2aa": "このファイルは利用できないか、大きすぎてプレビューできません。",
   "f0bc374fe068ccc0": "このファイルは大きすぎてプレビューできません。",
@@ -5682,6 +5744,7 @@
   "b6a29fff7c7c0808": "なし",
   "54420465784bb1bd": "以前のコメントを読み込む",
   "9d82ebf35bfb4043": "まだアクティビティはありません。",
+  "1cf216566c1ee064": "利用できないプロジェクト",
   "b5ddadeb0810688c": "状態",
   "93c1fc19d9bf1db0": "関与",
   "2160067266a61dd8": "すべて",
@@ -7252,6 +7315,7 @@
   "7df1a31c9019f5ff": "Nightly のアートワーク",
   "2f265d02c8753150": "Dev のアートワーク",
   "20160954f38eeb66": "バージョン表示",
+  "9ba1f9cd63b95074": "Flare artwork",
   "d5dc7576fd468be7": "標準",
   "3141408bf3874e64": "広い",
   "831badd18b64547e": "全幅",
@@ -7260,7 +7324,7 @@
   "7670f789e0d8672a": "アートワークを表示するのは組み込みのテーマだけのため、このテーマではバージョン表示を使用します。",
   "3c60ded47d8f82e5": "アートワークを表示するのは組み込みのテーマだけです。",
   "a11f85722f908aa4": "Dev と Nightly の環境の見分け方を選択します。",
-  "ddfb7f26acaf4d0f": "サイドバーのヘッダーに Dev または Nightly のアートワークを表示します。",
+  "c55250b2140f7630": "Show Flare artwork, or choose Dev or Nightly artwork.",
   "a6ec9f054ea34962": "色とテーマ",
   "009ed3b10618aa5f": "インターフェイス",
   "9d49e865858d0305": "インターフェイス全体の色と境界線のコントラストを調整します。",
@@ -7285,6 +7349,10 @@
   "cda243654f5bf0a7": "パネルのアニメーションをデフォルトにリセット",
   "c5e730293c781df4": "環境の識別をデフォルトにリセット",
   "11385321578620f5": "環境の識別",
+  "2cbd71530d4db4fc": "Use an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork is shown.",
+  "3d838bf1763707b5": "Show a still frame from an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork returns if loading fails.",
+  "9ea4375bd3a518d6": "Reset environment artwork image",
+  "5659d186a6fe35ef": "Environment artwork image URL",
   "c9f0ae0132e5debb": "スレッドの開始後も、入力欄の下にブランチとワークツリーのコントロールを表示します。",
   "997a837b4d1a3c62": "入力欄のコンテキストをデフォルトにリセット",
   "170455e28b72bdb0": "アクティブなスレッドで入力欄のコンテキストを表示し続ける",
@@ -9623,6 +9691,7 @@
   "64c8eaaee17ddc77": "テーマの組み合わせ",
   "36ec9a942db62602": "差分の色",
   "a044b6e4df214ae1": "パネルのアニメーション",
+  "91cf035a9300a6b9": "Environment artwork image",
   "2c1c93a646bbea6e": "言語",
   "e5144f91364fd9b7": "時刻の形式",
   "798dc6846ed39fa0": "アプリ内通知",
@@ -9805,7 +9874,6 @@
   "573ea5fdf293a9d6": "すべてのチェックアウト",
   "470ad8c54049d1e1": "チェックアウトを検索",
   "7e2dfdd9f97fc027": "プロジェクトの範囲",
-  "1cf216566c1ee064": "利用できないプロジェクト",
   "c1b8c351aa90f319": [
     {
       "t": "span",
@@ -11351,7 +11419,8 @@
   "88365077fd80787b": "カスタマイズ 表示 非表示 パネル カード 環境 エディター スクリプト ブランチ プルリクエスト Git 変更 サーバー オートメーション 系譜 使用量 上限 5 時間 週間 クォータ トークン コンテキストウィンドウ panel card",
   "d561f74efa5f3920": "推論レベル 思考 バー グラフ 単語 ラベル レベル 入力欄 reasoning effort",
   "6113c17109ee0d57": "LaTeX TeX KaTeX 数式 方程式 Markdown latex math",
-  "8c8364d44fa28d22": "dev nightly latest チャンネル アートワーク ピル ラベル 非表示 なし channel",
+  "10135bbfb309ce34": "flare header dev nightly latest channel artwork pill label hide none",
+  "22d1b0dab175b6a1": "flare dev nightly sidebar header backdrop custom image url picture",
   "2d90635156dfcb5a": "タイポグラフィ フォント ファミリー サイズ システム サンセリフ font",
   "d32e93777e4819c8": "タイポグラフィ フォント ファミリー サイズ 入力欄 入力 font",
   "120d2e7e8c848ee9": "タイポグラフィ フォント ファミリー サイズ 等幅 コードブロック 差分 ファイルプレビュー monospace",

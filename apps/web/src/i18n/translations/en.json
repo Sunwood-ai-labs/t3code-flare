@@ -3030,7 +3030,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "on the computer that opened this page"]
+      "c": [
+        " ",
+        "on the computer that opened this page"
+      ]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3042,7 +3045,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "· whoever runs it gets this access"]
+      "c": [
+        " ",
+        "· whoever runs it gets this access"
+      ]
     }
   ],
   "c54cc9c75db9dc58": "Only approve a sign-in you just started.",
@@ -4600,13 +4606,14 @@
   "6d00220bfee72afd": "Not connected: message not sent",
   "f62c43120e8c60e7": "Reconnecting to the environment. Try again once it is connected.",
   "74e7e5c0536cda02": "Side chat not started",
-  "faf9ee0a28119e10": "Remove the attachments and context, then send it again.",
-  "1778ba2f32077b39": "Update this server before starting multiple models.",
-  "736caccf2954a7f5": "Choose models and a base branch",
-  "d08959c85dad0ed0": "Multiple models need a new thread in a Git project. Each gets its own worktree.",
   "87d59d5dbb3eaf83": "Attached thread is on another machine",
   "4236b99f3807de4b": "This machine's agent can't read \"{title}\". Remove it, or switch back to its machine to send.",
   "811b25d99525bcf7": "This machine's agent can't read \"{title}\". Remove it, or switch back to {owner} to send.",
+  "faf9ee0a28119e10": "Remove the attachments and context, then send it again.",
+  "d6783ef5e11f3e89": "Could not start a side chat.",
+  "1778ba2f32077b39": "Update this server before starting multiple models.",
+  "736caccf2954a7f5": "Choose models and a base branch",
+  "d08959c85dad0ed0": "Multiple models need a new thread in a Git project. Each gets its own worktree.",
   "55f9621a69825e20": "Queued message not updated",
   "1072fb0e2846f2a4": "A queued message can't move to a side chat. Remove /side or /btw to save it.",
   "170ab9bcffd26887": "Start a Codex thread first",
@@ -4702,7 +4709,6 @@
   "f2f589819f1d5aaf": "A message can have at most {max} attachments.",
   "83611d16e98f2bbb": "The earlier edit was saved. Review your newer changes and save again.",
   "e7c78c337f470f5a": "Unable to open browser",
-  "d6783ef5e11f3e89": "Could not start a side chat.",
   "093c70146c496264": "The side chat was created, but it did not reach this client.",
   "0efeaa8d0ca3a757": "The side chat is no longer available.",
   "61fc2531d076d396": "Could not set the side chat's permission mode.",
@@ -5372,6 +5378,8 @@
   "c0eb8ecc00293d2d": "Show file explorer",
   "fe8fa0a7343cb0fa": "{count, plural, one {Preview limited to the first 1 MB of a {formatted} byte file.} other {Preview limited to the first 1 MB of a {formatted} byte file.}}",
   "bd52a233f685b517": "File contents",
+  "1ce1f773776b7c23": "This file is unavailable. Open the original in another app.",
+  "80024e2f665a5b25": "Legacy PowerPoint (.ppt) preview is not supported. Open the original file in another app.",
   "87ac593c75d6f1f5": "Could not read file",
   "ef2c08da078e1973": "Unable to load file preview.",
   "bc03e11dd5872fd5": "Unable to load workspace image.",
@@ -5433,6 +5441,52 @@
   "b9bddb775ce67840": "{count, plural, one {Show more cells ({count} remaining)} other {Show more cells ({count} remaining)}}",
   "d999fe8cc29e31e4": "Saved outputs only. Code is never executed.",
   "c0dcfa827c8c6fc1": "This notebook is empty.",
+  "a2b24499f2bb86a3": "Slides",
+  "2732200e26c87096": "Presentation view",
+  "edf2997465207757": "Slide {number} text",
+  "cf6ed7f585553f50": "Slide {number} preview",
+  "893f59850509de8d": "Worksheets",
+  "0734f52c26db0f87": "{name} cell values",
+  "95bd29605a625b20": [
+    "Slide ",
+    {
+      "i": 1,
+      "k": "_gt_value_1",
+      "v": "v"
+    }
+  ],
+  "f6c14fe053ac5f4f": {
+    "t": "T",
+    "i": 1,
+    "c": "Slide preview"
+  },
+  "d0f7cb41f1ebd8ce": "Slide preview",
+  "9e75e704c3e2aa1b": {
+    "t": "T",
+    "i": 1,
+    "c": "Text outline"
+  },
+  "f904407fa98c6e25": "Text outline",
+  "d763766a47324bec": {
+    "t": "T",
+    "i": 1,
+    "c": "Some slide text was omitted to keep the preview small."
+  },
+  "7389341ca87ed6fc": "Some slide text was omitted to keep the preview small.",
+  "e8c6c70ebe41b07b": "No supported text on this slide.",
+  "c45164db844b3d15": {
+    "t": "T",
+    "i": 1,
+    "c": "Showing at most 100 rows, 30 columns, and 2,000 characters per cell."
+  },
+  "ece4b8a1432aa663": "Showing at most 100 rows, 30 columns, and 2,000 characters per cell.",
+  "bd22bbcf7b99e678": {
+    "t": "T",
+    "i": 1,
+    "c": "Row"
+  },
+  "16708e00d779d894": "Row",
+  "00dcf27663d865aa": "This worksheet is empty.",
   "6b3a82494b31e7a2": "The file could not be loaded. Close it and try again.",
   "f37dcbd1ff309548": "This document took too long to preview. Open it in another app.",
   "28dd6601c49436f2": "Could not load the Office viewer. Close the file and try again.",
@@ -5489,6 +5543,7 @@
   "5c04103935c5510c": "Open file",
   "905935d86457429d": "Search files…",
   "12e0b17270235916": "Open a project to search its files.",
+  "fa251354c1f59562": "Unable to load this Office document. Open the original in another app.",
   "667872eb86f4230f": "Image decoding cancelled.",
   "c2b080e3e4324613": "This image took too long to decode.",
   "c54ff382c8f33dcd": "Could not load the image decoder.",
@@ -5501,6 +5556,13 @@
   "2d6da78ecabfd210": "The workspace folder could not be accessed.",
   "fdf4cf5389fb7848": "The file could not be accessed or read. It may be missing or inaccessible.",
   "40d67da2e98bb2ff": "Loading file",
+  "1913a6ef7fa2101c": "Could not read this Office document.",
+  "05619ad41f5f69c0": "Office document download timed out. Save this file to open it in another app.",
+  "e4e5ba7a40033f43": "Office preview startup timed out. Save this file to open it in another app.",
+  "561e9358b1c5692a": "Office preview timed out. Save this file to open it in another app.",
+  "ec42c5e184241584": "Unable to load this Office document.",
+  "a2622135cd3000b5": "Unable to read this Office document. Save it to open in another app.",
+  "1ab47ff895a6f27e": "Unable to read the Office preview result.",
   "3c737fc7e34ae6cd": "This file is unavailable.",
   "072c416c34dfb2aa": "This file is unavailable or too large to preview.",
   "f0bc374fe068ccc0": "This file is too large to preview.",
@@ -5701,6 +5763,7 @@
   "b6a29fff7c7c0808": "None",
   "54420465784bb1bd": "Load older comments",
   "9d82ebf35bfb4043": "Nothing has happened here yet.",
+  "1cf216566c1ee064": "Unavailable project",
   "b5ddadeb0810688c": "State",
   "93c1fc19d9bf1db0": "Involvement",
   "2160067266a61dd8": "Any",
@@ -7293,6 +7356,7 @@
   "7df1a31c9019f5ff": "Nightly artwork",
   "2f265d02c8753150": "Dev artwork",
   "20160954f38eeb66": "Version pill",
+  "9ba1f9cd63b95074": "Flare artwork",
   "d5dc7576fd468be7": "Comfortable",
   "3141408bf3874e64": "Wide",
   "831badd18b64547e": "Full",
@@ -7301,7 +7365,7 @@
   "7670f789e0d8672a": "Only built-in themes show artwork, so this theme shows the version pill.",
   "3c60ded47d8f82e5": "Only built-in themes show artwork.",
   "a11f85722f908aa4": "Choose how Dev and Nightly environments are identified.",
-  "ddfb7f26acaf4d0f": "Show Dev or Nightly artwork in the sidebar header.",
+  "c55250b2140f7630": "Show Flare artwork, or choose Dev or Nightly artwork.",
   "a6ec9f054ea34962": "Colors & themes",
   "009ed3b10618aa5f": "Interface",
   "9d49e865858d0305": "Adjust the contrast of colors and borders across the interface.",
@@ -7326,6 +7390,10 @@
   "cda243654f5bf0a7": "Reset panel animations to default",
   "c5e730293c781df4": "Reset environment identification to default",
   "11385321578620f5": "Environment identification",
+  "2cbd71530d4db4fc": "Use an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork is shown.",
+  "3d838bf1763707b5": "Show a still frame from an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork returns if loading fails.",
+  "9ea4375bd3a518d6": "Reset environment artwork image",
+  "5659d186a6fe35ef": "Environment artwork image URL",
   "c9f0ae0132e5debb": "Keep branch and worktree controls below the composer after a thread starts.",
   "997a837b4d1a3c62": "Reset composer context to default",
   "170455e28b72bdb0": "Keep composer context visible in active threads",
@@ -9681,6 +9749,7 @@
   "64c8eaaee17ddc77": "Theme mix",
   "36ec9a942db62602": "Diff colors",
   "a044b6e4df214ae1": "Panel animations",
+  "91cf035a9300a6b9": "Environment artwork image",
   "2c1c93a646bbea6e": "Language",
   "e5144f91364fd9b7": "Time format",
   "798dc6846ed39fa0": "In-app notifications",
@@ -9863,7 +9932,6 @@
   "573ea5fdf293a9d6": "All checkouts",
   "470ad8c54049d1e1": "Search checkouts",
   "7e2dfdd9f97fc027": "Project scope",
-  "1cf216566c1ee064": "Unavailable project",
   "c1b8c351aa90f319": [
     {
       "t": "span",
@@ -11411,7 +11479,8 @@
   "88365077fd80787b": "customize show hide panel card environment editor scripts branch pull request git changes servers automations lineage usage limits 5 hour weekly quota tokens context window",
   "d561f74efa5f3920": "reasoning effort thinking bars graph word label level composer",
   "6113c17109ee0d57": "latex tex katex equations formulas markdown",
-  "8c8364d44fa28d22": "dev nightly latest channel artwork pill label hide none",
+  "10135bbfb309ce34": "flare header dev nightly latest channel artwork pill label hide none",
+  "22d1b0dab175b6a1": "flare dev nightly sidebar header backdrop custom image url picture",
   "2d90635156dfcb5a": "typography family size system sans",
   "d32e93777e4819c8": "typography family size composer input",
   "120d2e7e8c848ee9": "typography family size monospace code blocks diffs file previews",

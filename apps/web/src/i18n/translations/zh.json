@@ -3034,7 +3034,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "位于打开此页面的计算机上"]
+      "c": [
+        " ",
+        "位于打开此页面的计算机上"
+      ]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3046,7 +3049,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "· 运行它的任何人都会获得此访问权限"]
+      "c": [
+        " ",
+        "· 运行它的任何人都会获得此访问权限"
+      ]
     }
   ],
   "c54cc9c75db9dc58": "请只批准你刚刚发起的登录。",
@@ -4605,13 +4611,14 @@
   "6d00220bfee72afd": "未连接：消息没有发送",
   "f62c43120e8c60e7": "正在重新连接环境，连接后请重试。",
   "74e7e5c0536cda02": "侧聊未开始",
-  "faf9ee0a28119e10": "请移除附件和上下文后再发送。",
-  "1778ba2f32077b39": "请先更新此服务器，再同时启动多个模型。",
-  "736caccf2954a7f5": "请选择模型和基准分支",
-  "d08959c85dad0ed0": "多模型需要在 Git 项目中新建会话，每个模型各有自己的工作树。",
   "87d59d5dbb3eaf83": "附加的会话在另一台机器上",
   "4236b99f3807de4b": "此机器上的智能体无法读取“{title}”。请将其移除，或切换回其所在机器后发送。",
   "811b25d99525bcf7": "此机器的智能体无法读取“{title}”。请将其移除，或切换回 {owner} 再发送。",
+  "faf9ee0a28119e10": "请移除附件和上下文后再发送。",
+  "d6783ef5e11f3e89": "无法开始侧聊。",
+  "1778ba2f32077b39": "请先更新此服务器，再同时启动多个模型。",
+  "736caccf2954a7f5": "请选择模型和基准分支",
+  "d08959c85dad0ed0": "多模型需要在 Git 项目中新建会话，每个模型各有自己的工作树。",
   "55f9621a69825e20": "排队消息未更新",
   "1072fb0e2846f2a4": "排队消息无法移到侧聊。请移除 /side 或 /btw 后保存。",
   "170ab9bcffd26887": "请先开始一个 Codex 会话",
@@ -4707,7 +4714,6 @@
   "f2f589819f1d5aaf": "一条消息最多可有 {max} 个附件。",
   "83611d16e98f2bbb": "之前的编辑已保存，请检查新改动后再次保存。",
   "e7c78c337f470f5a": "无法打开浏览器",
-  "d6783ef5e11f3e89": "无法开始侧聊。",
   "093c70146c496264": "侧聊已创建，但没有同步到此客户端。",
   "0efeaa8d0ca3a757": "这段侧聊已不可用。",
   "61fc2531d076d396": "无法设置侧聊的权限模式。",
@@ -5377,6 +5383,8 @@
   "c0eb8ecc00293d2d": "显示文件浏览器",
   "fe8fa0a7343cb0fa": "{count, plural, other {预览仅限此 {formatted} 字节文件的前 1 MB。}}",
   "bd52a233f685b517": "文件内容",
+  "1ce1f773776b7c23": "This file is unavailable. Open the original in another app.",
+  "80024e2f665a5b25": "Legacy PowerPoint (.ppt) preview is not supported. Open the original file in another app.",
   "87ac593c75d6f1f5": "无法读取文件",
   "ef2c08da078e1973": "无法加载文件预览。",
   "bc03e11dd5872fd5": "无法加载工作区图片。",
@@ -5438,6 +5446,52 @@
   "b9bddb775ce67840": "{count, plural, other {显示更多单元格（剩余 {count} 个）}}",
   "d999fe8cc29e31e4": "仅显示已保存的输出，不会执行代码。",
   "c0dcfa827c8c6fc1": "此笔记本为空。",
+  "a2b24499f2bb86a3": "Slides",
+  "2732200e26c87096": "Presentation view",
+  "edf2997465207757": "Slide {number} text",
+  "cf6ed7f585553f50": "Slide {number} preview",
+  "893f59850509de8d": "Worksheets",
+  "0734f52c26db0f87": "{name} cell values",
+  "95bd29605a625b20": [
+    "Slide ",
+    {
+      "i": 1,
+      "k": "_gt_value_1",
+      "v": "v"
+    }
+  ],
+  "f6c14fe053ac5f4f": {
+    "t": "T",
+    "i": 1,
+    "c": "Slide preview"
+  },
+  "d0f7cb41f1ebd8ce": "Slide preview",
+  "9e75e704c3e2aa1b": {
+    "t": "T",
+    "i": 1,
+    "c": "Text outline"
+  },
+  "f904407fa98c6e25": "Text outline",
+  "d763766a47324bec": {
+    "t": "T",
+    "i": 1,
+    "c": "Some slide text was omitted to keep the preview small."
+  },
+  "7389341ca87ed6fc": "Some slide text was omitted to keep the preview small.",
+  "e8c6c70ebe41b07b": "No supported text on this slide.",
+  "c45164db844b3d15": {
+    "t": "T",
+    "i": 1,
+    "c": "Showing at most 100 rows, 30 columns, and 2,000 characters per cell."
+  },
+  "ece4b8a1432aa663": "Showing at most 100 rows, 30 columns, and 2,000 characters per cell.",
+  "bd22bbcf7b99e678": {
+    "t": "T",
+    "i": 1,
+    "c": "Row"
+  },
+  "16708e00d779d894": "Row",
+  "00dcf27663d865aa": "This worksheet is empty.",
   "6b3a82494b31e7a2": "无法加载文件。请关闭后重试。",
   "f37dcbd1ff309548": "此文档预览超时。请使用其他应用打开。",
   "28dd6601c49436f2": "无法加载 Office 查看器。请关闭文件后重试。",
@@ -5494,6 +5548,7 @@
   "5c04103935c5510c": "打开文件",
   "905935d86457429d": "搜索文件…",
   "12e0b17270235916": "打开一个项目以搜索其中的文件。",
+  "fa251354c1f59562": "Unable to load this Office document. Open the original in another app.",
   "667872eb86f4230f": "已取消图片解码。",
   "c2b080e3e4324613": "此图片解码超时。",
   "c54ff382c8f33dcd": "无法加载图片解码器。",
@@ -5506,6 +5561,13 @@
   "2d6da78ecabfd210": "无法访问工作区文件夹。",
   "fdf4cf5389fb7848": "无法访问或读取该文件，它可能已不存在或无权访问。",
   "40d67da2e98bb2ff": "正在加载文件",
+  "1913a6ef7fa2101c": "Could not read this Office document.",
+  "05619ad41f5f69c0": "Office document download timed out. Save this file to open it in another app.",
+  "e4e5ba7a40033f43": "Office preview startup timed out. Save this file to open it in another app.",
+  "561e9358b1c5692a": "Office preview timed out. Save this file to open it in another app.",
+  "ec42c5e184241584": "Unable to load this Office document.",
+  "a2622135cd3000b5": "Unable to read this Office document. Save it to open in another app.",
+  "1ab47ff895a6f27e": "Unable to read the Office preview result.",
   "3c737fc7e34ae6cd": "此文件不可用。",
   "072c416c34dfb2aa": "此文件不可用，或太大而无法预览。",
   "f0bc374fe068ccc0": "此文件太大，无法预览。",
@@ -5706,6 +5768,7 @@
   "b6a29fff7c7c0808": "无",
   "54420465784bb1bd": "加载较早的评论",
   "9d82ebf35bfb4043": "这里还没有任何动态。",
+  "1cf216566c1ee064": "项目不可用",
   "b5ddadeb0810688c": "状态",
   "93c1fc19d9bf1db0": "参与方式",
   "2160067266a61dd8": "任意",
@@ -7301,6 +7364,7 @@
   "7df1a31c9019f5ff": "Nightly 背景图",
   "2f265d02c8753150": "开发版背景图",
   "20160954f38eeb66": "版本标签",
+  "9ba1f9cd63b95074": "Flare artwork",
   "d5dc7576fd468be7": "适中",
   "3141408bf3874e64": "宽",
   "831badd18b64547e": "全宽",
@@ -7309,7 +7373,7 @@
   "7670f789e0d8672a": "仅内置主题支持背景图，因此当前主题显示版本标签。",
   "3c60ded47d8f82e5": "仅内置主题支持背景图。",
   "a11f85722f908aa4": "选择开发版与 Nightly 环境的标识方式。",
-  "ddfb7f26acaf4d0f": "在侧边栏顶部显示开发版或 Nightly 背景图。",
+  "c55250b2140f7630": "Show Flare artwork, or choose Dev or Nightly artwork.",
   "a6ec9f054ea34962": "颜色与主题",
   "009ed3b10618aa5f": "界面",
   "9d49e865858d0305": "调整界面颜色和边框的对比度。",
@@ -7334,6 +7398,10 @@
   "cda243654f5bf0a7": "重置面板动画为默认值",
   "c5e730293c781df4": "重置环境标识为默认值",
   "11385321578620f5": "环境标识",
+  "2cbd71530d4db4fc": "Use an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork is shown.",
+  "3d838bf1763707b5": "Show a still frame from an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork returns if loading fails.",
+  "9ea4375bd3a518d6": "Reset environment artwork image",
+  "5659d186a6fe35ef": "Environment artwork image URL",
   "c9f0ae0132e5debb": "会话开始后，仍在输入框下方显示分支和工作树控件。",
   "997a837b4d1a3c62": "重置输入框上下文为默认值",
   "170455e28b72bdb0": "在活跃会话中保持输入框上下文可见",
@@ -9686,6 +9754,7 @@
   "64c8eaaee17ddc77": "主题混搭",
   "36ec9a942db62602": "差异颜色",
   "a044b6e4df214ae1": "面板动画",
+  "91cf035a9300a6b9": "Environment artwork image",
   "2c1c93a646bbea6e": "语言",
   "e5144f91364fd9b7": "时间格式",
   "798dc6846ed39fa0": "应用内通知",
@@ -9868,7 +9937,6 @@
   "573ea5fdf293a9d6": "所有工作副本",
   "470ad8c54049d1e1": "搜索工作副本",
   "7e2dfdd9f97fc027": "项目范围",
-  "1cf216566c1ee064": "项目不可用",
   "c1b8c351aa90f319": [
     {
       "t": "span",
@@ -11425,7 +11493,8 @@
   "88365077fd80787b": "自定义 显示 隐藏 面板 卡片 环境 编辑器 脚本 分支 PR git 更改 服务器 自动化 谱系 用量 限制 5 小时 每周 配额 token 上下文窗口",
   "d561f74efa5f3920": "推理强度 思考 条形 图表 文字 标签 级别 输入框",
   "6113c17109ee0d57": "latex tex katex 方程 公式 markdown",
-  "8c8364d44fa28d22": "dev nightly latest 渠道 插图 胶囊 标签 隐藏 无",
+  "10135bbfb309ce34": "flare header dev nightly latest channel artwork pill label hide none",
+  "22d1b0dab175b6a1": "flare dev nightly sidebar header backdrop custom image url picture",
   "2d90635156dfcb5a": "排版 字体 字号 系统 无衬线",
   "d32e93777e4819c8": "排版 字体 字号 输入框 输入",
   "120d2e7e8c848ee9": "排版 字体 字号 等宽 代码块 差异 文件预览",

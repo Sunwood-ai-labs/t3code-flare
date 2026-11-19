@@ -3030,7 +3030,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "en el ordenador que abrió esta página"]
+      "c": [
+        " ",
+        "en el ordenador que abrió esta página"
+      ]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3042,7 +3045,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "· quien lo ejecute obtiene este acceso"]
+      "c": [
+        " ",
+        "· quien lo ejecute obtiene este acceso"
+      ]
     }
   ],
   "c54cc9c75db9dc58": "Aprueba solo un inicio de sesión que acabes de iniciar.",
@@ -4598,13 +4604,14 @@
   "6d00220bfee72afd": "Sin conexión: mensaje no enviado",
   "f62c43120e8c60e7": "Reconectando con el entorno. Vuelve a intentarlo cuando esté conectado.",
   "74e7e5c0536cda02": "Chat lateral no iniciado",
-  "faf9ee0a28119e10": "Quita los adjuntos y el contexto, y vuelve a enviarlo.",
-  "1778ba2f32077b39": "Actualiza este servidor antes de iniciar varios modelos.",
-  "736caccf2954a7f5": "Elige los modelos y una rama base",
-  "d08959c85dad0ed0": "Varios modelos necesitan un hilo nuevo en un proyecto Git. Cada uno tiene su propio worktree.",
   "87d59d5dbb3eaf83": "El hilo adjunto está en otra máquina",
   "4236b99f3807de4b": "El agente de esta máquina no puede leer \"{title}\". Quítalo o vuelve a su máquina para enviarlo.",
   "811b25d99525bcf7": "El agente de esta máquina no puede leer \"{title}\". Quítalo o vuelve a {owner} para enviar.",
+  "faf9ee0a28119e10": "Quita los adjuntos y el contexto, y vuelve a enviarlo.",
+  "d6783ef5e11f3e89": "No se pudo iniciar un chat lateral.",
+  "1778ba2f32077b39": "Actualiza este servidor antes de iniciar varios modelos.",
+  "736caccf2954a7f5": "Elige los modelos y una rama base",
+  "d08959c85dad0ed0": "Varios modelos necesitan un hilo nuevo en un proyecto Git. Cada uno tiene su propio worktree.",
   "55f9621a69825e20": "Mensaje en cola no actualizado",
   "1072fb0e2846f2a4": "Un mensaje en cola no puede pasar a un chat lateral. Quita /side o /btw para guardarlo.",
   "170ab9bcffd26887": "Inicia primero un hilo de Codex",
@@ -4700,7 +4707,6 @@
   "f2f589819f1d5aaf": "Un mensaje puede tener como máximo {max} adjuntos.",
   "83611d16e98f2bbb": "Se guardó la edición anterior. Revisa tus cambios más recientes y vuelve a guardar.",
   "e7c78c337f470f5a": "No se puede abrir el navegador",
-  "d6783ef5e11f3e89": "No se pudo iniciar un chat lateral.",
   "093c70146c496264": "El chat lateral se creó, pero no llegó a este cliente.",
   "0efeaa8d0ca3a757": "El chat lateral ya no está disponible.",
   "61fc2531d076d396": "No se pudo definir el modo de permisos del chat lateral.",
@@ -5370,6 +5376,8 @@
   "c0eb8ecc00293d2d": "Mostrar explorador de archivos",
   "fe8fa0a7343cb0fa": "{count, plural, one {Vista previa limitada al primer MB de un archivo de {formatted} bytes.} other {Vista previa limitada al primer MB de un archivo de {formatted} bytes.}}",
   "bd52a233f685b517": "Contenido del archivo",
+  "1ce1f773776b7c23": "This file is unavailable. Open the original in another app.",
+  "80024e2f665a5b25": "Legacy PowerPoint (.ppt) preview is not supported. Open the original file in another app.",
   "87ac593c75d6f1f5": "No se pudo leer el archivo",
   "ef2c08da078e1973": "No se puede cargar la vista previa del archivo.",
   "bc03e11dd5872fd5": "No se puede cargar la imagen del espacio de trabajo.",
@@ -5431,6 +5439,52 @@
   "b9bddb775ce67840": "{count, plural, one {Mostrar más celdas (queda {count})} other {Mostrar más celdas (quedan {count})}}",
   "d999fe8cc29e31e4": "Solo las salidas guardadas. El código nunca se ejecuta.",
   "c0dcfa827c8c6fc1": "Este notebook está vacío.",
+  "a2b24499f2bb86a3": "Slides",
+  "2732200e26c87096": "Presentation view",
+  "edf2997465207757": "Slide {number} text",
+  "cf6ed7f585553f50": "Slide {number} preview",
+  "893f59850509de8d": "Worksheets",
+  "0734f52c26db0f87": "{name} cell values",
+  "95bd29605a625b20": [
+    "Slide ",
+    {
+      "i": 1,
+      "k": "_gt_value_1",
+      "v": "v"
+    }
+  ],
+  "f6c14fe053ac5f4f": {
+    "t": "T",
+    "i": 1,
+    "c": "Slide preview"
+  },
+  "d0f7cb41f1ebd8ce": "Slide preview",
+  "9e75e704c3e2aa1b": {
+    "t": "T",
+    "i": 1,
+    "c": "Text outline"
+  },
+  "f904407fa98c6e25": "Text outline",
+  "d763766a47324bec": {
+    "t": "T",
+    "i": 1,
+    "c": "Some slide text was omitted to keep the preview small."
+  },
+  "7389341ca87ed6fc": "Some slide text was omitted to keep the preview small.",
+  "e8c6c70ebe41b07b": "No supported text on this slide.",
+  "c45164db844b3d15": {
+    "t": "T",
+    "i": 1,
+    "c": "Showing at most 100 rows, 30 columns, and 2,000 characters per cell."
+  },
+  "ece4b8a1432aa663": "Showing at most 100 rows, 30 columns, and 2,000 characters per cell.",
+  "bd22bbcf7b99e678": {
+    "t": "T",
+    "i": 1,
+    "c": "Row"
+  },
+  "16708e00d779d894": "Row",
+  "00dcf27663d865aa": "This worksheet is empty.",
   "6b3a82494b31e7a2": "No se pudo cargar el archivo. Ciérralo y vuelve a intentarlo.",
   "f37dcbd1ff309548": "La vista previa de este documento tardó demasiado. Ábrelo en otra app.",
   "28dd6601c49436f2": "No se pudo cargar el visor de Office. Cierra el archivo y vuelve a intentarlo.",
@@ -5487,6 +5541,7 @@
   "5c04103935c5510c": "Abrir archivo",
   "905935d86457429d": "Buscar archivos…",
   "12e0b17270235916": "Abre un proyecto para buscar en sus archivos.",
+  "fa251354c1f59562": "Unable to load this Office document. Open the original in another app.",
   "667872eb86f4230f": "Se canceló la decodificación de la imagen.",
   "c2b080e3e4324613": "Esta imagen tardó demasiado en decodificarse.",
   "c54ff382c8f33dcd": "No se pudo cargar el decodificador de imágenes.",
@@ -5499,6 +5554,13 @@
   "2d6da78ecabfd210": "No se pudo acceder a la carpeta del espacio de trabajo.",
   "fdf4cf5389fb7848": "No se pudo acceder al archivo ni leerlo. Puede que falte o que no sea accesible.",
   "40d67da2e98bb2ff": "Cargando el archivo",
+  "1913a6ef7fa2101c": "Could not read this Office document.",
+  "05619ad41f5f69c0": "Office document download timed out. Save this file to open it in another app.",
+  "e4e5ba7a40033f43": "Office preview startup timed out. Save this file to open it in another app.",
+  "561e9358b1c5692a": "Office preview timed out. Save this file to open it in another app.",
+  "ec42c5e184241584": "Unable to load this Office document.",
+  "a2622135cd3000b5": "Unable to read this Office document. Save it to open in another app.",
+  "1ab47ff895a6f27e": "Unable to read the Office preview result.",
   "3c737fc7e34ae6cd": "Este archivo no está disponible.",
   "072c416c34dfb2aa": "Este archivo no está disponible o es demasiado grande para previsualizarlo.",
   "f0bc374fe068ccc0": "Este archivo es demasiado grande para previsualizarlo.",
@@ -5699,6 +5761,7 @@
   "b6a29fff7c7c0808": "Nadie",
   "54420465784bb1bd": "Cargar comentarios anteriores",
   "9d82ebf35bfb4043": "Aquí no ha pasado nada todavía.",
+  "1cf216566c1ee064": "Proyecto no disponible",
   "b5ddadeb0810688c": "Estado",
   "93c1fc19d9bf1db0": "Participación",
   "2160067266a61dd8": "Cualquiera",
@@ -7286,6 +7349,7 @@
   "7df1a31c9019f5ff": "Ilustración de Nightly",
   "2f265d02c8753150": "Ilustración de Dev",
   "20160954f38eeb66": "Etiqueta de versión",
+  "9ba1f9cd63b95074": "Flare artwork",
   "d5dc7576fd468be7": "Cómodo",
   "3141408bf3874e64": "Ancho",
   "831badd18b64547e": "Completo",
@@ -7294,7 +7358,7 @@
   "7670f789e0d8672a": "Solo los temas integrados muestran ilustración, así que este tema muestra la etiqueta de versión.",
   "3c60ded47d8f82e5": "Solo los temas integrados muestran ilustración.",
   "a11f85722f908aa4": "Elige cómo se identifican los entornos Dev y Nightly.",
-  "ddfb7f26acaf4d0f": "Muestra la ilustración de Dev o Nightly en la cabecera de la barra lateral.",
+  "c55250b2140f7630": "Show Flare artwork, or choose Dev or Nightly artwork.",
   "a6ec9f054ea34962": "Colores y temas",
   "009ed3b10618aa5f": "Interfaz",
   "9d49e865858d0305": "Ajusta el contraste de los colores y los bordes en toda la interfaz.",
@@ -7319,6 +7383,10 @@
   "cda243654f5bf0a7": "Restablecer las animaciones de paneles al valor predeterminado",
   "c5e730293c781df4": "Restablecer la identificación del entorno al valor predeterminado",
   "11385321578620f5": "Identificación del entorno",
+  "2cbd71530d4db4fc": "Use an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork is shown.",
+  "3d838bf1763707b5": "Show a still frame from an http(s) image URL. HTTPS and desktop apps require HTTPS except for loopback URLs. Built-in artwork returns if loading fails.",
+  "9ea4375bd3a518d6": "Reset environment artwork image",
+  "5659d186a6fe35ef": "Environment artwork image URL",
   "c9f0ae0132e5debb": "Mantén los controles de rama y worktree debajo del cuadro de mensaje después de que empiece un hilo.",
   "997a837b4d1a3c62": "Restablecer el contexto del cuadro de mensaje al valor predeterminado",
   "170455e28b72bdb0": "Mantener visible el contexto del cuadro de mensaje en los hilos activos",
@@ -9669,6 +9737,7 @@
   "64c8eaaee17ddc77": "Mezcla de temas",
   "36ec9a942db62602": "Colores del diff",
   "a044b6e4df214ae1": "Animaciones de paneles",
+  "91cf035a9300a6b9": "Environment artwork image",
   "2c1c93a646bbea6e": "Idioma",
   "e5144f91364fd9b7": "Formato de hora",
   "798dc6846ed39fa0": "Notificaciones en la app",
@@ -9851,7 +9920,6 @@
   "573ea5fdf293a9d6": "Todos los checkouts",
   "470ad8c54049d1e1": "Buscar checkouts",
   "7e2dfdd9f97fc027": "Ámbito de proyectos",
-  "1cf216566c1ee064": "Proyecto no disponible",
   "c1b8c351aa90f319": [
     {
       "t": "span",
@@ -11396,7 +11464,8 @@
   "88365077fd80787b": "personalizar mostrar ocultar panel tarjeta entorno editor scripts rama pull request git cambios servidores automatizaciones linaje uso límites 5 horas semanal cuota tokens ventana de contexto",
   "d561f74efa5f3920": "esfuerzo de razonamiento pensamiento barras gráfico palabra etiqueta nivel cuadro mensaje compositor",
   "6113c17109ee0d57": "latex tex katex ecuaciones fórmulas markdown",
-  "8c8364d44fa28d22": "dev nightly latest canal ilustración píldora etiqueta ocultar ninguno",
+  "10135bbfb309ce34": "flare header dev nightly latest channel artwork pill label hide none",
+  "22d1b0dab175b6a1": "flare dev nightly sidebar header backdrop custom image url picture",
   "2d90635156dfcb5a": "tipografía familia tamaño sistema sans",
   "d32e93777e4819c8": "tipografía familia tamaño cuadro mensaje compositor entrada",
   "120d2e7e8c848ee9": "tipografía familia tamaño monoespaciada bloques de código diffs vistas previas de archivos",

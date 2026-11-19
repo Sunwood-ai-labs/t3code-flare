@@ -113,7 +113,9 @@ export function createOfficeDocumentClient(source: OfficeDocumentSource, initial
     let timeout = setTimeout(() => {
       finish({
         status: "error",
-        message: m(msg("Office document download timed out. Save this file to open it in another app.")),
+        message: m(
+          msg("Office document download timed out. Save this file to open it in another app."),
+        ),
       });
     }, OFFICE_PREVIEW_TRANSFER_TIMEOUT_MS);
     stop = () => {
@@ -130,7 +132,9 @@ export function createOfficeDocumentClient(source: OfficeDocumentSource, initial
         timeout = setTimeout(() => {
           finish({
             status: "error",
-            message: m(msg("Office preview startup timed out. Save this file to open it in another app.")),
+            message: m(
+              msg("Office preview startup timed out. Save this file to open it in another app."),
+            ),
           });
         }, OFFICE_PREVIEW_STARTUP_TIMEOUT_MS);
         worker = new Worker(new URL("./officeDocument.worker.ts", import.meta.url), {
@@ -147,7 +151,9 @@ export function createOfficeDocumentClient(source: OfficeDocumentSource, initial
             timeout = setTimeout(() => {
               finish({
                 status: "error",
-                message: m(msg("Office preview timed out. Save this file to open it in another app.")),
+                message: m(
+                  msg("Office preview timed out. Save this file to open it in another app."),
+                ),
               });
             }, OFFICE_PREVIEW_TIMEOUT_MS);
             try {
@@ -159,7 +165,9 @@ export function createOfficeDocumentClient(source: OfficeDocumentSource, initial
               finish({
                 status: "error",
                 message:
-                  cause instanceof Error ? cause.message : m(msg("Unable to load this Office document.")),
+                  cause instanceof Error
+                    ? cause.message
+                    : m(msg("Unable to load this Office document.")),
               });
             }
             return;
@@ -186,7 +194,9 @@ export function createOfficeDocumentClient(source: OfficeDocumentSource, initial
           finish({
             status: "error",
             message:
-              cause instanceof Error ? cause.message : m(msg("Unable to load this Office document.")),
+              cause instanceof Error
+                ? cause.message
+                : m(msg("Unable to load this Office document.")),
           });
         }
       });

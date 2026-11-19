@@ -82,7 +82,7 @@ export function WorkspaceOfficePreview(props: {
   if (url === null || (!requiresAuthorization && asset._tag === "Failure")) {
     return (
       <FileSurfaceFailure
-        message={gt("Unable to load this Office document. Open the original in another app.")} 
+        message={gt("Unable to load this Office document. Open the original in another app.")}
         onRetry={() => setRetryRevision((revision) => revision + 1)}
       />
     );

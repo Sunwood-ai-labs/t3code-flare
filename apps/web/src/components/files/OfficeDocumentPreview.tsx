@@ -21,7 +21,7 @@ function DocumentContents({ document }: { readonly document: OfficeDocument }) {
     return (
       <>
         <nav
-          aria-label={gt("Slides")} 
+          aria-label={gt("Slides")}
           className="flex min-w-0 shrink-0 flex-nowrap gap-1 overflow-x-auto border-b p-2"
         >
           {document.slides.map((entry, index) => (
@@ -34,11 +34,13 @@ function DocumentContents({ document }: { readonly document: OfficeDocument }) {
               aria-pressed={selected === index}
               onClick={() => setSelected(index)}
             >
-              <T>Slide <Var>{entry.number}</Var></T>
+              <T>
+                Slide <Var>{entry.number}</Var>
+              </T>
             </Button>
           ))}
         </nav>
-        <div className="flex shrink-0 gap-1 border-b p-2" aria-label={gt("Presentation view")} >
+        <div className="flex shrink-0 gap-1 border-b p-2" aria-label={gt("Presentation view")}>
           <Button
             type="button"
             variant="ghost"
@@ -46,7 +48,9 @@ function DocumentContents({ document }: { readonly document: OfficeDocument }) {
             aria-pressed={!outline}
             onClick={() => setOutline(false)}
           >
-            <T><T>Slide preview</T></T>
+            <T>
+              <T>Slide preview</T>
+            </T>
           </Button>
           <Button
             type="button"
@@ -55,16 +59,24 @@ function DocumentContents({ document }: { readonly document: OfficeDocument }) {
             aria-pressed={outline}
             onClick={() => setOutline(true)}
           >
-            <T><T>Text outline</T></T>
+            <T>
+              <T>Text outline</T>
+            </T>
           </Button>
         </div>
         {document.truncated || slide?.truncated ? (
           <FileSurfaceNotice>
-            <T><T>Some slide text was omitted to keep the preview small.</T></T>
+            <T>
+              <T>Some slide text was omitted to keep the preview small.</T>
+            </T>
           </FileSurfaceNotice>
         ) : null}
         <section
-          aria-label={outline ? gt("Slide {number} text", { number: slide?.number ?? 1 }) : gt("Slide {number} preview", { number: slide?.number ?? 1 })}
+          aria-label={
+            outline
+              ? gt("Slide {number} text", { number: slide?.number ?? 1 })
+              : gt("Slide {number} preview", { number: slide?.number ?? 1 })
+          }
           className="scrollbar-gutter-both min-h-0 flex-1 overflow-auto p-4"
         >
           {outline ? (
@@ -75,7 +87,9 @@ function DocumentContents({ document }: { readonly document: OfficeDocument }) {
                 </p>
               ))
             ) : (
-              <p className="text-muted-foreground"><T>No supported text on this slide.</T></p>
+              <p className="text-muted-foreground">
+                <T>No supported text on this slide.</T>
+              </p>
             )
           ) : slide ? (
             <div
@@ -146,7 +160,7 @@ function DocumentContents({ document }: { readonly document: OfficeDocument }) {
   return (
     <>
       <nav
-        aria-label={gt("Worksheets")} 
+        aria-label={gt("Worksheets")}
         className="flex min-w-0 shrink-0 flex-nowrap gap-1 overflow-x-auto border-b p-2"
       >
         {document.sheets.map((entry, index) => (
@@ -165,7 +179,9 @@ function DocumentContents({ document }: { readonly document: OfficeDocument }) {
       </nav>
       {sheet?.truncated ? (
         <FileSurfaceNotice>
-          <T><T>Showing at most 100 rows, 30 columns, and 2,000 characters per cell.</T></T>
+          <T>
+            <T>Showing at most 100 rows, 30 columns, and 2,000 characters per cell.</T>
+          </T>
         </FileSurfaceNotice>
       ) : null}
       <div className="scrollbar-gutter-both min-h-0 flex-1 overflow-auto">
@@ -177,7 +193,9 @@ function DocumentContents({ document }: { readonly document: OfficeDocument }) {
             <thead>
               <tr>
                 <th scope="col" className="border p-2">
-                  <T><T>Row</T></T>
+                  <T>
+                    <T>Row</T>
+                  </T>
                 </th>
                 {Array.from({ length: columns }, (_, index) => (
                   <th key={columnLabel(index)} scope="col" className="border p-2 text-left">
@@ -208,7 +226,9 @@ function DocumentContents({ document }: { readonly document: OfficeDocument }) {
             </tbody>
           </table>
         ) : (
-          <p className="p-4 text-muted-foreground"><T>This worksheet is empty.</T></p>
+          <p className="p-4 text-muted-foreground">
+            <T>This worksheet is empty.</T>
+          </p>
         )}
       </div>
     </>
