@@ -477,7 +477,7 @@ export function AppearanceSettingsPanel() {
                 settings.environmentArtworkImageUrl !==
                 DEFAULT_UNIFIED_SETTINGS.environmentArtworkImageUrl ? (
                   <SettingResetButton
-                    label={gt("environment artwork image")}
+                    ariaLabel={gt("Reset environment artwork image")}
                     onClick={() =>
                       updateSettings({
                         environmentArtworkImageUrl:
