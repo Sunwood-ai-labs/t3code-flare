@@ -26,9 +26,8 @@ concurrency:
 
 jobs:
   fingerprint:
-    if: ${{ github.repository == 'pingdotgg/t3code' }}
+    if: ${{ github.repository == 'pingdotgg/t3code' && (github.event.action != 'edited' || github.event.changes.base) }}
     name: Native fingerprint diff
-    if: github.event.action != 'edited' || github.event.changes.base
     runs-on: blacksmith-8vcpu-ubuntu-2404
     permissions:
       contents: read
