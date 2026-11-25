@@ -1353,8 +1353,12 @@ export default function FilePreviewPanel({
   const hostFolderPath = isFolder && isHostFile ? relativePath : null;
   // A chat-linked folder reads as a file until its read settles, and a trail only implies a folder.
   const fileManagerAction = fileManagerActionForPath({
-    isFolder: relativePath === null || file.isNotFile || documentMetadata.data?.kind === "directory",
-    isSettled: file.data !== null || file.error !== null || (isDocument && documentMetadata.data?.kind === "file"),
+    isFolder:
+      relativePath === null || file.isNotFile || documentMetadata.data?.kind === "directory",
+    isSettled:
+      file.data !== null ||
+      file.error !== null ||
+      (isDocument && documentMetadata.data?.kind === "file"),
     canReveal: serverConfig?.shellRevealInFileManager === true,
   });
   // Everything preview-related keys off previewPath; a folder has no preview.
