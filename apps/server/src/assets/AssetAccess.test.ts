@@ -2003,7 +2003,6 @@ describe("AssetAccess", () => {
       }).pipe(Effect.provide(layerTest)),
   );
 
-
   it.effect("ignores a client-named document type for image attachments", () =>
     Effect.gen(function* () {
       const config = yield* ServerConfig.ServerConfig;
