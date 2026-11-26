@@ -267,7 +267,10 @@ test("every fork preview job that reads a secret or runs the PR's code waits in 
     assert.match(jobSteps[0], /^name: Confirm the PR is still open\n/, name);
     assert.ok(jobSteps.findIndex((step) => /secrets\.|actions\/checkout/.test(step)) > 0, name);
   }
-  assert.match(gated.preview, /^ {4}if: needs\.request\.outputs\.sha != ''$/m);
+  assert.match(
+    gated.preview,
+    /^ {4}if: \$\{\{ github\.repository == 'pingdotgg\/t3code' && \(needs\.request\.outputs\.sha != ''\) \}\}$/m,
+  );
   assert.doesNotMatch(comment, /secrets\.|^ +ref: |github\.event\.pull_request\.head/m);
 });
 
